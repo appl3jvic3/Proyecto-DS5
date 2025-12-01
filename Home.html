@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Esquina Geek</title>
+    <link rel="icon" href="img/favicon/favicon.ico" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="Home.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-top">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar productos..." class="search-input">
+                <button class="search-btn" id="btn-search">
+                    <img src="img/iconos/buscar.png" alt="Buscar" class="icon-btn"
+                        style="width: 20px; height: 20px; vertical-align: middle;">
+                </button>
+            </div>
+            <div class="logo">
+                <img src="img/logo.png" alt="Logo La Esquina Geek" class="logo-img"
+                    style="width:38px;height:38px;vertical-align:middle;margin-right:10px;">
+                <h1 style="display:inline;vertical-align:middle;">La Esquina Geek</h1>
+            </div>
+            <div class="header-actions">
+                <button class="cart-btn" id="btn-cart">
+                    <img src="img/iconos/carrito.png" alt="Carrito" class="icon-btn"
+                        style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+                    Carrito (<span id="cart-count">0</span>)
+                </button>
+                <button class="login-btn" id="btn-login">
+                    <img src="img/iconos/usuario.png" alt="Login" class="icon-btn"
+                        style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+                    <span id="user-name">Login</span>
+                </button>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="Home.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="sobre-nosotros.html">Sobre Nosotros</a>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <section class="bienvenida">
+            <h2>¡Bienvenido a La Esquina Geek!</h2>
+            <p>Descubre los mejores coleccionables y productos exclusivos para verdaderos fanáticos.</p>
+        </section>
+
+        <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin-bottom: 1rem;">Productos Destacados</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <img src="img/productos/charizard.png" alt="Charizard VMAX" class="product-img">
+                <h3>Charizard VMAX</h3>
+                <p class="product-price">$120.99</p>
+                <button class="btn-primary">Ver más</button>
+            </div>
+            <div class="product-card">
+                <img src="img/productos/gundam-astray.jpg" alt="Gundam Astray" class="product-img">
+                <h3>Gundam Astray</h3>
+                <p class="product-price">$75.50</p>
+                <button class="btn-primary">Ver más</button>
+            </div>
+            <div class="product-card">
+                <img src="img/productos/blue-eyes.jpg" alt="Blue-Eyes Dragon" class="product-img">
+                <h3>Blue-Eyes Dragon</h3>
+                <p class="product-price">$85.99</p>
+                <button class="btn-primary">Ver más</button>
+            </div>
+            <div class="product-card">
+                <img src="img/productos/iron-man-hot-toys.jpg" alt="Iron Man Hot Toys" class="product-img">
+                <h3>Iron Man Hot Toys</h3>
+                <p class="product-price">$425.00</p>
+                <button class="btn-primary">Ver más</button>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE CONFIANZA -->
+        <section class="confianza-section">
+            <div class="confianza-grid">
+                <div class="confianza-card">
+                    <img src="img/confianza/star.png" alt="Calificación alta" class="confianza-icon">
+                    <h4>Calificación 5 estrellas</h4>
+                    <p>Nuestros clientes nos recomiendan por la atención y calidad.</p>
+                </div>
+                <div class="confianza-card">
+                    <img src="img/confianza/Csegura.png" alt="Compra segura" class="confianza-icon">
+                    <h4>Compra 100% segura</h4>
+                    <p>Pagos protegidos y entregas garantizadas en todo el país.</p>
+                </div>
+                <div class="confianza-card">
+                    <img src="img/confianza/cliente.png" alt="Clientes felices" class="confianza-icon">
+                    <h4>Clientes satisfechos</h4>
+                    <p>Más de 1,000 coleccionistas felices con su compra online.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>📞 641-754-0072</p>
+                <p>✉️ soporte@laesquinageek.com</p>
+                <p>📍 Panamá, Vía España</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces</h3>
+                <a href="Home.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="sobre-nosotros.html">Sobre Nosotros</a>
+            </div>
+            <div class="footer-section">
+                <h3>Redes Sociales</h3>
+                <div class="footer-social">
+                    <a href="https://facebook.com/laesquinageek" target="_blank" aria-label="Facebook">
+                        <img src="img/iconos/RS/facebook.png" alt="Facebook" class="icon-btn"
+                            style="width: 28px; height: 28px;">
+                    </a>
+                    <a href="https://twitter.com/laesquinageek" target="_blank" aria-label="Twitter">
+                        <img src="img/iconos/RS/X.png" alt="Twitter" class="icon-btn"
+                            style="width: 28px; height: 28px;">
+                    </a>
+                    <a href="https://instagram.com/laesquinageek" target="_blank" aria-label="Instagram">
+                        <img src="img/iconos/RS/instagram.png" alt="Instagram" class="icon-btn"
+                            style="width: 28px; height: 28px;">
+                    </a>
+                    <a href="https://tiktok.com/@laesquinageek" target="_blank" aria-label="TikTok">
+                        <img src="img/iconos/RS/tiktok.png" alt="TikTok" class="icon-btn"
+                            style="width: 28px; height: 28px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 La Esquina Geek. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="Home.js"></script>
+
+</body>
+
+</html>
