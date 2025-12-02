@@ -29,10 +29,35 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Manejar envío de formularios
     if (loginForm) {
-        loginForm.addEventListener("submit", function(e) {
-            e.preventDefault();
-            alert("Inicio de sesión exitoso (simulado). En una implementación real, esto conectaría con el backend en C#.");
+        loginForm.addEventListener("submit", async function(e) {
+    e. preventDefault();
+    
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+    
+    try {
+        const response = await fetch('https://localhost:7XXX/api/Auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
         });
+        
+        if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', JSON.stringify(data. user));
+            window.location. href = 'Home.html';
+        } else {
+            alert('Credenciales incorrectas');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error al conectar con el servidor');
+    }
+});
     }
     
     if (registerForm) {
