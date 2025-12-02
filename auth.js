@@ -29,36 +29,36 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Manejar envío de formularios
     if (loginForm) {
-        loginForm.addEventListener("submit", async function(e) {
-    e. preventDefault();
-    
-    const email = document.getElementById("login-email").value;
-    const password = document.getElementById("login-password").value;
-    
-    try {
-        const response = await fetch('https://localhost:7XXX/api/Auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        });
+    loginForm.addEventListener("submit", async function(e) {
+        e. preventDefault();
         
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('currentUser', JSON.stringify(data. user));
-            window.location. href = 'Home.html';
-        } else {
-            alert('Credenciales incorrectas');
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        
+        try {
+            const response = await fetch(getApiUrl(API_CONFIG. ENDPOINTS.AUTH.LOGIN), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                localStorage.setItem('token', data.token);
+                localStorage. setItem('isLoggedIn', 'true');
+                localStorage.setItem('currentUser', JSON.stringify(data. user));
+                window.location. href = 'Home.html';
+            } else {
+                alert('Credenciales incorrectas');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al conectar con el servidor.  Verifica que la API esté corriendo en https://localhost:7293');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al conectar con el servidor');
-    }
-});
-    }
+    });
+}
     
     if (registerForm) {
         registerForm.addEventListener("submit", function(e) {
