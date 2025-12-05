@@ -103,4 +103,63 @@
   document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", init)
     : init();
+
+  /* ===== NUEVO: Búsqueda global en Home usando TODOS los productos de productos.js ===== */
+
+  // Usa la lista global expuesta por productos.js si existe; si no, usa los 4 del Home.
+  const ALL = Array.isArray(window.ALL_PRODUCTS) ? window.ALL_PRODUCTS : products;
+
+  const homeGrid = document.getElementById("home-products-grid");
+  const searchInput = document.getElementById("search-input");
+  const btnSearch = document.getElementById("btn-search");
+
+  function renderHome(list) {
+    if (!homeGrid) return;
+    if (!list || list.length === 0) {
+      homeGrid.innerHTML = `
+        <div class="empty-results" style="text-align:center;color:#a8b5c7;padding:1rem;">
+          <p>No se encontraron productos para tu búsqueda.</p>
+        </div>
+      `;
+      return;
+    }
+    homeGrid.innerHTML = list.map(p => `
+      <div class="product-card">
+        <img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.src='img/productos/default-product.jpg'">
+        <h3>${p.name}</h3>
+        <p class="product-price">$${Number(p.price).toFixed(2)}</p>
+        <a class="btn-primary" href="productos.html#${p.id}">Ver producto</a>
+      </div>
+    `).join("");
+  }
+
+  function buscarEnHome(term) {
+    const t = (term || "").trim().toLowerCase();
+    if (!t) {
+      // Si el término está vacío, vuelve a mostrar el contenido inicial del Home (los 4 destacados ya presentes)
+      renderHome(ALL.slice(0, Math.max(4, ALL.length ? 4 : 0)));
+      return;
+    }
+    const filtrados = ALL.filter(p => (p.name || "").toLowerCase().includes(t));
+    renderHome(filtrados);
+  }
+
+  // Conecta la búsqueda del Home
+  if (btnSearch && searchInput && homeGrid) {
+    btnSearch.addEventListener("click", () => buscarEnHome(searchInput.value));
+  }
+  if (searchInput && homeGrid) {
+    searchInput.addEventListener("input", e => buscarEnHome(e.target.value));
+    searchInput.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        buscarEnHome(searchInput.value);
+      }
+    });
+  }
+
+  // Render inicial para Home basado en ALL (mantiene solo algunos en Home)
+  if (homeGrid) {
+    renderHome(ALL.slice(0, 4));
+  }
 })();
