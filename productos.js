@@ -1,4 +1,4 @@
-// productos.js - Con carrito integrado completo
+// productos.js - Complete
 
 document.addEventListener("DOMContentLoaded", function () {
   const PRODUCTS = [
@@ -77,29 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   const productsGrid = document.getElementById("products-grid");
-  const miniCart = document.getElementById("mini-cart");
-  const miniCartItems = document.getElementById("mini-cart-items");
-  const miniCartCount = document.getElementById("mini-cart-count");
-  const miniCartTotal = document.getElementById("mini-cart-total");
   const cartCountElement = document.getElementById("cart-count");
-
-  // Crear botón flotante del carrito
-  createCartToggle();
-
-  // Función para crear el botón flotante del carrito
-  function createCartToggle() {
-    const cartToggle = document.createElement('button');
-    cartToggle.className = 'cart-toggle';
-    cartToggle.innerHTML = '🛒<span class="cart-badge" id="cart-badge">0</span>';
-    cartToggle.onclick = toggleMiniCart;
-    document.body.appendChild(cartToggle);
-  }
-
-  // Función para mostrar/ocultar el mini carrito
-  function toggleMiniCart() {
-    miniCart.classList.toggle('show');
-    updateMiniCart();
-  }
 
   // Función para agregar producto al carrito
   function addToCart(product) {
@@ -117,13 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
-    updateMiniCart();
     
     // Mostrar feedback
     showAddToCartFeedback(product.name);
-    
-    // Mostrar automáticamente el mini carrito
-    miniCart.classList.add('show');
   }
 
   // Función para mostrar feedback visual
@@ -165,55 +139,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 2000);
   }
 
-  // Función para actualizar el mini carrito
-  function updateMiniCart() {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    
-    // Actualizar contador
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    miniCartCount.textContent = `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`;
-    
-    // Actualizar items
-    miniCartItems.innerHTML = '';
-    
-    if (cart.length === 0) {
-      miniCartItems.innerHTML = '<p style="color: #a8b5c7; text-align: center; padding: 1rem;">Tu carrito está vacío</p>';
-      miniCartTotal.textContent = '$0.00';
-      return;
-    }
-    
-    cart.forEach(item => {
-      const itemElement = document.createElement('div');
-      itemElement.className = 'mini-cart-item';
-      itemElement.innerHTML = `
-        <img src="${item.image}" alt="${item.name}">
-        <div class="mini-cart-item-details">
-          <p class="mini-cart-item-name">${item.name}</p>
-          <p class="mini-cart-item-quantity">Cantidad: ${item.quantity}</p>
-        </div>
-        <div class="mini-cart-item-price">$${(item.price * item.quantity).toFixed(2)}</div>
-      `;
-      miniCartItems.appendChild(itemElement);
-    });
-    
-    // Actualizar total
-    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    miniCartTotal.textContent = `$${total.toFixed(2)}`;
-  }
-
   // Función para actualizar contador del carrito
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     
     if (cartCountElement) cartCountElement.textContent = totalItems;
-    
-    // Actualizar badge del botón flotante
-    const cartBadge = document.getElementById('cart-badge');
-    if (cartBadge) {
-      cartBadge.textContent = totalItems;
-      cartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
-    }
   }
 
   // Renderizar productos
@@ -251,19 +182,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    // Botón de checkout en mini carrito
-    const checkoutButton = document.getElementById('btn-checkout-mini');
-    if (checkoutButton) {
-      checkoutButton.addEventListener('click', function() {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        if (cart.length === 0) {
-          alert('Tu carrito está vacío');
-          return;
-        }
-        window.location.href = 'carrito.html';
-      });
-    }
-
     // Botón de login
     const loginButton = document.getElementById('btn-login');
     if (loginButton) {
@@ -294,18 +212,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function init() {
     renderProducts();
     updateCartCount();
-    updateMiniCart();
     setupHeaderButtons();
   }
-
-  // Cerrar mini carrito al hacer clic fuera de él
-  document.addEventListener('click', function(event) {
-    if (!miniCart.contains(event.target) && 
-        !event.target.closest('.cart-toggle') && 
-        miniCart.classList.contains('show')) {
-      miniCart.classList.remove('show');
-    }
-  });
 
   init();
 });
