@@ -139,27 +139,37 @@ checkoutButton.addEventListener('click', async function() {
         checkoutButton.disabled = true;
         checkoutButton.textContent = 'Procesando... ';
         
+        
         // Enviar cada producto del carrito a la API
-        for (const item of cart) {
-            const carritoData = {
-                usuarioId: currentUser.usuarioId, // Asegúrate que esto viene del login
-                productoId: item. productoId || item.id, // Ajustar según tu estructura
-                cantidad: item.quantity,
-                precioTotal: item.price * item.quantity
-            };
-            
-            const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.CARRITO. ADD), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(carritoData)
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Error al procesar ${item.name}`);
-            }
-        }
+for (const item of cart) {
+    console.log('Procesando item:', item); // Para debug
+    
+    const carritoData = {
+        usuarioId: currentUser.usuarioId || currentUser.id, // Soportar ambos
+        productoId: item.productoId || item.id,
+        cantidad: item.quantity,
+        precioTotal: item.price * item.quantity
+    };
+    
+    console.log('Enviando a API:', carritoData); // Para debug
+    
+    const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS. CARRITO.ADD), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(carritoData)
+    });
+    
+    if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error respuesta API:', errorData);
+        throw new Error(`Error al procesar ${item.name}: ${errorData.message || response.statusText}`);
+    }
+    
+    const result = await response.json();
+    console.log('Respuesta exitosa:', result); // Para debug
+}
         
         // Guardar también en localStorage para respaldo
         const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);

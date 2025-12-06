@@ -11,7 +11,7 @@ const API_CONFIG = {
         },
         CARRITO: {
             GET: '/Carrito',
-            ADD: '/Carrito/agregar',
+            ADD: '/Carrito/',
             CHECKOUT: '/Carrito/checkout'
         },
         HISTORIAL: {

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  // NUEVO: Exponer lista completa sin cambiar tu lógica
+  
   // La variable se llama "corrige" como pediste; también exponemos ALL_PRODUCTS por compatibilidad.
   try {
     window.corrige = Array.isArray(window.corrige) && window.corrige.length ? window.corrige : [...PRODUCTS];
@@ -97,9 +97,13 @@ document.addEventListener("DOMContentLoaded", function () {
       existingItem.quantity += 1;
     } else {
       cart.push({
-        ...product,
-        quantity: 1
-      });
+    id: product.id,
+    productoId: product.id, 
+    name: product.name,
+    price: product.price,
+    image: product.image,
+    quantity: 1
+});
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
