@@ -15,7 +15,11 @@ const API_CONFIG = {
             CHECKOUT: '/Carrito/checkout'
         },
         HISTORIAL: {
-            GET_ALL: '/Historial'
+            // Get orders by user (page & filters opcionales)
+            GET_BY_USER: (userId, page = 1, pageSize = 10, from = '', to = '') =>
+                `/Historial/user/${userId}?page=${page}&pageSize=${pageSize}${from ? `&from=${encodeURIComponent(from)}` : ''}${to ? `&to=${encodeURIComponent(to)}` : ''}`,
+            // Get items for a specific order
+            GET_ORDER: (orderId) => `/Historial/${orderId}`
         }
     }
 };
