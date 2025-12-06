@@ -173,4 +173,73 @@
   .order-summary {
     grid-template-columns: 1fr;
   }
+  
 }
+
+.order-actions {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.btn-view-details {
+    background: #ff6b35;
+    color: white;
+    border: none;
+    padding: 0.5rem 1. 5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.btn-view-details:hover {
+    background: #e55a2a;
+    transform: translateY(-2px);
+}
+
+.order-items-container {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #2c3e50;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: #1a2332;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.order-item-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.order-item-details {
+    flex: 1;
+}
+
+.order-item-details h4 {
+    margin: 0;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.order-item-quantity,
+.order-item-price {
+    margin: 0. 25rem 0;
+    color: #a8b5c7;
+    font-size: 0.8rem;
+}
+
+.order-item-total {
+    font-weight: bold;
+    color: #ff6b35;
+    font-size: 1. 1rem;
+}
+
