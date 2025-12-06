@@ -116,22 +116,52 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Event listener para el botón de pago
-    checkoutButton.addEventListener('click', function() {
-        if (cart.length === 0) {
-            alert('Tu carrito está vacío. Agrega productos antes de proceder al pago.');
-            return;
+    // Event listener para el botón de pago
+checkoutButton.addEventListener('click', async function() {
+    if (cart.length === 0) {
+        alert('Tu carrito está vacío.  Agrega productos antes de proceder al pago.');
+        return;
+    }
+    
+    // Verificar si el usuario está logueado
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const currentUser = JSON.parse(localStorage. getItem("currentUser"));
+    
+    if (!isLoggedIn || !currentUser) {
+        if (confirm('Para proceder al pago necesitas iniciar sesión.  ¿Quieres ir a la página de login?')) {
+            window.location.href = 'auth. html';
         }
+        return;
+    }
+    
+    try {
+        // Deshabilitar botón para evitar doble clic
+        checkoutButton.disabled = true;
+        checkoutButton.textContent = 'Procesando... ';
         
-        // Verificar si el usuario está logueado
-        const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-        if (!isLoggedIn) {
-            if (confirm('Para proceder al pago necesitas iniciar sesión. ¿Quieres ir a la página de login?')) {
-                window.location.href = 'auth.html';
+        // Enviar cada producto del carrito a la API
+        for (const item of cart) {
+            const carritoData = {
+                usuarioId: currentUser.usuarioId, // Asegúrate que esto viene del login
+                productoId: item. productoId || item.id, // Ajustar según tu estructura
+                cantidad: item.quantity,
+                precioTotal: item.price * item.quantity
+            };
+            
+            const response = await fetch(getApiUrl(API_CONFIG.ENDPOINTS.CARRITO. ADD), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(carritoData)
+            });
+            
+            if (!response.ok) {
+                throw new Error(`Error al procesar ${item.name}`);
             }
-            return;
         }
         
-        // Guardar el carrito actual como una compra en el historial
+        // Guardar también en localStorage para respaldo
         const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
         const tax = subtotal * 0.07;
         const shipping = 5.00;
@@ -139,14 +169,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const purchase = {
             id: Date.now(),
-            date: new Date().toLocaleDateString('es-ES', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }),
-            items: [...cart],
+            date: new Date().toISOString(),
+            items: [... cart],
             subtotal: subtotal,
             shipping: shipping,
             tax: tax,
@@ -154,19 +178,24 @@ document.addEventListener('DOMContentLoaded', function() {
             status: 'Procesando'
         };
         
-        // Obtener historial existente o crear uno nuevo
         let purchaseHistory = JSON.parse(localStorage.getItem('purchaseHistory')) || [];
-        purchaseHistory.push(purchase);
-        localStorage.setItem('purchaseHistory', JSON.stringify(purchaseHistory));
+        purchaseHistory. push(purchase);
+        localStorage. setItem('purchaseHistory', JSON.stringify(purchaseHistory));
         
         // Vaciar el carrito
         cart = [];
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart', JSON. stringify(cart));
         
-        // Redirigir a la página de confirmación o historial
-        alert('¡Compra realizada con éxito! Serás redirigido al historial de compras.');
+        alert('¡Compra realizada con éxito!  Guardada en la base de datos.');
         window.location.href = 'historial.html';
-    });
+        
+    } catch (error) {
+        console.error('Error al procesar la compra:', error);
+        alert('Hubo un error al procesar tu compra. Por favor intenta nuevamente.');
+        checkoutButton.disabled = false;
+        checkoutButton.textContent = 'Proceder al Pago';
+    }
+});
     
     // Inicializar el carrito
     renderCartItems();

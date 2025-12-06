@@ -1,4 +1,4 @@
-// auth.js - Versión simplificada y corregida
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // Elementos del DOM
@@ -48,7 +48,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const data = await response.json();
                 localStorage.setItem('token', data.token);
                 localStorage. setItem('isLoggedIn', 'true');
-                localStorage.setItem('currentUser', JSON.stringify(data. user));
+                localStorage.setItem('currentUser', JSON.stringify({
+                usuarioId: data.user.usuarioId,
+                name: data.user.nombreUsuario,
+                email: data.user.correo
+        }));
                 window.location. href = 'Home.html';
             } else {
                 alert('Credenciales incorrectas');
