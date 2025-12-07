@@ -32,6 +32,13 @@
   margin-top: 0;
   width: 100%;
 }
+.member-card p {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  width: 100%;
+}
 .member-card:hover {
   border-color: #ff6b35;
   background: #22304a;
