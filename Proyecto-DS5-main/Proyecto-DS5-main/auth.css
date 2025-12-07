@@ -1,0 +1,224 @@
+/* ========================================
+   AUTH - LOGIN / REGISTRO CORREGIDO
+   ======================================== */
+
+body {
+  background: linear-gradient(135deg, #0f1b2e 0%, #152238 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+/* Botón de retorno */
+.btn-back {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255, 107, 53, 0.1);
+  border: 2px solid #ff6b35;
+  border-radius: 2rem;
+  color: #ffffff;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background: #ff6b35;
+  color: #ffffff;
+  transform: translateX(-5px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.btn-back svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .btn-back {
+    top: 1rem;
+    left: 1rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .btn-back span {
+    display: none;
+  }
+  
+  .btn-back svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* Contenedor principal */
+.auth-container-simple {
+  background: #1a2942;
+  border-radius: 1rem;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  max-width: 400px;
+  width: 100%;
+  padding: 2rem;
+  border: 2px solid #ff6b35;
+  position: relative;
+}
+
+/* Botones de toggle - AHORA AFUERA DEL CONTENEDOR */
+.auth-toggle-btns {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 10;
+}
+
+.toggle-btn {
+  background: #1a2942;
+  border: 2px solid #ff6b35;
+  color: #ff6b35;
+  font-size: 1rem;
+  font-family: "Rajdhani", sans-serif;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.toggle-btn.active {
+  background: #ff6b35;
+  color: #ffffff;
+}
+
+.toggle-btn:hover:not(.active) {
+  background: rgba(255, 107, 53, 0.1);
+}
+
+/* Formularios */
+.auth-forms-toggle {
+  position: relative;
+  min-height: 280px;
+}
+
+.auth-form-simple {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-form-simple h1 {
+  font-family: "Rajdhani", sans-serif;
+  font-size: 1.8rem;
+  color: #ff6b35;
+  text-align: center;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-form-simple input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 2px solid #1e3a5f;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: #0f1b2e;
+  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.auth-form-simple input::placeholder {
+  color: #a8b5c7;
+}
+
+.auth-form-simple input:focus {
+  outline: none;
+  border-color: #ff6b35;
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.btn-submit {
+  background: #ff6b35;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.9rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: "Rajdhani", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-submit:hover {
+  background: #ff8c42;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(255, 107, 53, 0.4);
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: #a8b5c7;
+  text-align: center;
+  margin: 0.5rem 0 0 0;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+  color: #ff6b35;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-container-simple {
+    padding: 1.5rem 1.2rem;
+    margin: 0;
+  }
+  
+  .toggle-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    min-width: 120px;
+  }
+  
+  .auth-form-simple h1 {
+    font-size: 1.5rem;
+  }
+  
+  .auth-toggle-btns {
+    gap: 0.5rem;
+  }
+}
+/* Wrapper para organizar botones y formulario */
+.auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    width: 100%;
+}

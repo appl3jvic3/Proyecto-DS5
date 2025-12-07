@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Registro - La Esquina Geek</title>
+    <link
+      rel="icon"
+      href="img/favicon/favicon.ico"
+      sizes="32x32"
+      type="image/png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="auth.css" />
+  </head>
+
+  <body>
+    <!-- Botón de retorno al inicio -->
+    <a href="Home.html" class="btn-back" aria-label="Volver al inicio">
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M19 12H5M5 12L12 19M5 12L12 5"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span>Volver al inicio</span>
+    </a>
+
+    <div class="auth-wrapper">
+      <!-- Botones de cambio AFUERA del contenedor -->
+      <div class="auth-toggle-btns">
+        <button id="show-login" class="toggle-btn active">
+          Iniciar Sesión
+        </button>
+        <button id="show-register" class="toggle-btn">Registrarse</button>
+      </div>
+
+      <!-- Contenedor del formulario -->
+      <div class="auth-container-simple">
+        <div class="auth-forms-toggle">
+          <form class="auth-form-simple" id="login-form">
+            <h1>Iniciar Sesión</h1>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+            <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            <button type="submit" class="btn-submit">Iniciar Sesión</button>
+          </form>
+
+          <form
+            class="auth-form-simple"
+            id="register-form"
+            style="display: none"
+          >
+            <h1>Crear Cuenta</h1>
+            <input
+              type="text"
+              id="register-name"
+              name="name"
+              placeholder="Nombre completo"
+              required
+            />
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              placeholder="Contraseña"
+              required
+            />
+            <button type="submit" class="btn-submit">Registrarse</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="Config.js"></script>
+    <script src="auth.js"></script>
+  </body>
+</html>

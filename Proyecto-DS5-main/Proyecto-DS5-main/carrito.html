@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - La Esquina Geek</title>
+    <link rel="icon" href="img/favicon/favicon.ico" sizes="32x32" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Home.css">
+    <link rel="stylesheet" href="carrito.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-top">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar productos..." class="search-input">
+                <button class="search-btn" id="btn-search">
+                    <img src="img/iconos/buscar.png" alt="Buscar" class="icon-btn" style="width: 20px; height: 20px;">
+                </button>
+            </div>
+            <div class="logo">
+                <img src="img/logo.png" alt="Logo La Esquina Geek" class="logo-img" style="width:38px;height:38px;vertical-align:middle;margin-right:10px;">
+                <h1 style="display:inline;vertical-align:middle;">La Esquina Geek</h1>
+            </div>
+            <div class="header-actions">
+                <button class="cart-btn" id="btn-cart">
+                    <img src="img/iconos/carrito.png" alt="Carrito" class="icon-btn" style="width: 22px; height: 22px;">
+                    Carrito (<span id="cart-count">0</span>)
+                </button>
+                <button class="login-btn" id="btn-login">
+                    <img src="img/iconos/usuario.png" alt="Login" class="icon-btn" style="width: 22px; height: 22px;">
+                    <span id="user-name">Login</span>
+                </button>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <a href="Home.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="carrito.html">Carrito</a>
+            <a href="historial.html">Mis Compras</a>
+        </nav>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+        <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2.5rem; margin-bottom: 2rem; color: #ff6b35;">
+            🛒 Mi Carrito de Compras
+        </h2>
+
+        <div class="cart-container">
+            <!-- PRODUCTOS EN EL CARRITO -->
+            <div class="cart-items" id="cart-items">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>
+
+            <!-- RESUMEN DE COMPRA -->
+            <div class="cart-summary">
+                <h3>Resumen del Pedido</h3>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Envío:</span>
+                    <span id="shipping">$5.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Impuestos (7%):</span>
+                    <span id="tax">$0.00</span>
+                </div>
+                <hr>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">$0.00</span>
+                </div>
+                <button class="btn-checkout" id="btn-checkout">Proceder al Pago</button>
+                <a href="Home.html" class="btn-continue">Seguir Comprando</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>📞 641-754-0072</p>
+                <p>✉️ soporte@laesquinageek.com</p>
+                <p>📍 Panamá, Vía España</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces</h3>
+                <a href="Home.html">Inicio</a>
+                <a href="productos.html">Productos</a>
+                <a href="carrito.html">Carrito</a>
+                <a href="historial.html">Mis Compras</a>
+            </div>
+            <div class="footer-section">
+                <h3>Redes Sociales</h3>
+                <div class="footer-social">
+                    <a href="https://facebook.com/laesquinageek" target="_blank"><img src="img/iconos/RS/facebook.png" alt="Facebook" class="icon-btn" style="width: 28px; height: 28px;"></a>
+                    <a href="https://twitter.com/laesquinageek" target="_blank"><img src="img/iconos/RS/X.png" alt="Twitter" class="icon-btn" style="width: 28px; height: 28px;"></a>
+                    <a href="https://instagram.com/laesquinageek" target="_blank"><img src="img/iconos/RS/instagram.png" alt="Instagram" class="icon-btn" style="width: 28px; height: 28px;"></a>
+                    <a href="https://tiktok.com/@laesquinageek" target="_blank"><img src="img/iconos/RS/tiktok.png" alt="TikTok" class="icon-btn" style="width: 28px; height: 28px;"></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 La Esquina Geek. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="carrito.js"></script>
+</body>
+</html>
