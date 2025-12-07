@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener("submit", async function(e) {
         e. preventDefault();
         
-        const email = document.getElementById("login-email").value;
-        const password = document.getElementById("login-password").value;
+        const correo = document.getElementById("login-email").value;
+        const contrasena = document.getElementById("login-password").value;
         
         try {
             const response = await fetch(getApiUrl(API_CONFIG. ENDPOINTS.AUTH.LOGIN), {
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ correo, contrasena })
             });
             
             if (response.ok) {
@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage. setItem('isLoggedIn', 'true');
                 localStorage.setItem('currentUser', JSON.stringify({
                 usuarioId: data.user.usuarioId,
-                nombreUsuario: data.user.name,
-                correo: data.user.email
+                nombreUsuario: data.user.nombreUsuario,
+                correo: data.user.correo
         }));
                 window.location. href = 'Home.html';
             } else {
@@ -66,17 +66,17 @@ document.addEventListener("DOMContentLoaded", function () {
     
     if (registerForm) {
     registerForm.addEventListener("submit", async function(e) {
-        e. preventDefault();
+        e.preventDefault();
         
-        const name = document.getElementById("register-name").value;
-        const email = document.getElementById("register-email"). value;
-        const password = document.getElementById("register-password").value;
+        const nombreUsuario = document.getElementById("register-name").value;
+        const correo = document.getElementById("register-email"). value;
+        const contrasena = document.getElementById("register-password").value;
         
         try {
             const response = await fetch(getApiUrl(API_CONFIG. ENDPOINTS.AUTH.REGISTER), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password })
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify({ nombreUsuario, correo, contrasena })
             });
             
             if (response.ok) {
