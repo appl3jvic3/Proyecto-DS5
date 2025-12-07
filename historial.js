@@ -1,9 +1,4 @@
-// historial.js - Version simplificada y robusta
-// Cambios hechos por Luis:
-// - Simplificado el manejo de eventos para evitar errores de selector
-// - Mejorada la generacion de HTML para evitar problemas con comillas
-// - Agregada logica para construir rutas de imagenes basadas en la primera palabra del producto
-// - Implementado fallback a imagen por defecto cuando no se encuentra la imagen especifica
+// historial.js - Versión corregida y simplificada
 
 (function () {
   "use strict";
@@ -88,9 +83,9 @@
     card. className = "order-card";
 
     const numeroCompra = order. numeroCompra || order.id || "N/A";
-    const fechaCompra = order.fechaCompra || new Date().toISOString();
-    const cantidad = order.cantidad || 0;
-    const precioTotal = order.precioTotal || 0;
+    const fechaCompra = order.fechaCompra || order.date || new Date().toISOString();
+    const cantidad = order.itemsCount || order.cantidad || 0;
+    const precioTotal = order.total || order.precioTotal || 0;
 
     card.innerHTML = `
         <div class="order-header">
@@ -133,7 +128,7 @@
     // Cambio hecho por Luis: Evita errores de querySelectorAll con selectores invalidos
     const button = card. querySelector(`#btn-order-${index}`);
     button.addEventListener("click", () => toggleOrderDetails(order));
-    
+
     return card;
   }
 
@@ -179,28 +174,14 @@
       const precioUnitario = precioTotal / cantidad;
 
       // Cambio hecho por Luis:
-      // Mapeo de IDs de productos a imágenes porque la API no devuelve las rutas de las imágenes
-      // Se busca el ID del producto y se asigna su imagen correspondiente
-      const imagenesProductos = {
-        1: "img/productos/charizard.png",
-        2: "img/productos/gundam-astray.jpg",
-        3: "img/productos/black-lotus.jpg",
-        4: "img/productos/blue-eyes.jpg",
-        5: "img/productos/mewtwo.jpg",
-        6: "img/productos/iron-man-hot-toys.jpg",
-        7: "img/productos/funko-batman.jpg",
-        8: "img/productos/one-piece-luffy.jpg",
-        9: "img/productos/spiderman-statue.jpg",
-        10: "img/productos/marvel-legends.jpg",
-        11: "img/productos/Gamecube Console Platinum.jpg",
-        12: "img/productos/nintendo64.jpg"
-      };
+      // Construir nombre de imagen basado en la primera palabra del producto
+      // Ejemplo: "Charizard VMAX" -> "charizard.png"
+      // Esto permite usar una sola imagen para productos con variantes
+      const nombreProducto = producto.nombreProducto || producto.name || "default";
+      const primeraPalabra = nombreProducto.split(' ')[0]. toLowerCase();
+      const imagenUrl = `img/productos/${primeraPalabra}.png`;
 
-      const nombreProducto = producto.nombreProducto || producto.name || "Producto";
-      const productId = producto.productoId || producto.id || productoId;
-      let imagenUrl = imagenesProductos[productId] || "img/productos/default.png";
-
-      console.log("ID Producto:", productId, "- URL imagen:", imagenUrl);
+      console.log("Buscando imagen en:", imagenUrl);
 
       itemsContainer.innerHTML = `
                 <div class="order-items">
@@ -208,7 +189,7 @@
                         <img src="${imagenUrl}" 
                              alt="${nombreProducto}" 
                              class="order-item-img"
-                             onerror="this.src='img/productos/default.png'">
+                             onerror="this.src='img/productos/default.png'; console.error('No se encontro imagen:', '${imagenUrl}')">
                         <div class="order-item-details">
                             <h4>${nombreProducto}</h4>
                             <p class="order-item-quantity">Cantidad: ${cantidad}</p>
