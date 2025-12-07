@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
       id: 11,
       name: "Gamecube Console Platinum",
       price: 267.0,
-      image: "img/productos/gamecube.jpg",
+      image: "img/productos/Gamecube Console Platinum.jpg",
     },
     {
       id: 12,
@@ -76,11 +76,16 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  
   // La variable se llama "corrige" como pediste; también exponemos ALL_PRODUCTS por compatibilidad.
   try {
-    window.corrige = Array.isArray(window.corrige) && window.corrige.length ? window.corrige : [...PRODUCTS];
-    window.ALL_PRODUCTS = Array.isArray(window.ALL_PRODUCTS) && window.ALL_PRODUCTS.length ? window.ALL_PRODUCTS : [...PRODUCTS];
+    window.corrige =
+      Array.isArray(window.corrige) && window.corrige.length
+        ? window.corrige
+        : [...PRODUCTS];
+    window.ALL_PRODUCTS =
+      Array.isArray(window.ALL_PRODUCTS) && window.ALL_PRODUCTS.length
+        ? window.ALL_PRODUCTS
+        : [...PRODUCTS];
   } catch (e) {
     // Ignorar en entornos donde window no esté disponible
   }
@@ -91,24 +96,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Función para agregar producto al carrito
   function addToCart(product) {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingItem = cart.find(item => item.id === product.id);
+    const existingItem = cart.find((item) => item.id === product.id);
 
     if (existingItem) {
       existingItem.quantity += 1;
     } else {
       cart.push({
-    id: product.id,
-    productoId: product.id, 
-    name: product.name,
-    price: product.price,
-    image: product.image,
-    quantity: 1
-});
+        id: product.id,
+        productoId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+      });
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
-    
+
     // Mostrar feedback
     showAddToCartFeedback(product.name);
   }
@@ -116,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Función para mostrar feedback visual
   function showAddToCartFeedback(productName) {
     // Crear elemento de feedback
-    const feedback = document.createElement('div');
+    const feedback = document.createElement("div");
     feedback.style.cssText = `
       position: fixed;
       top: 50%;
@@ -130,11 +135,11 @@ document.addEventListener("DOMContentLoaded", function () {
       z-index: 10000;
       animation: fadeInOut 2s ease-in-out;
     `;
-    feedback.textContent = `✅ ${productName} agregado al carrito`;
+    feedback.textContent = `${productName} agregado al carrito`;
     document.body.appendChild(feedback);
 
     // Agregar animación CSS
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       @keyframes fadeInOut {
         0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
@@ -156,28 +161,33 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    
+
     if (cartCountElement) cartCountElement.textContent = totalItems;
   }
 
   // Renderizar productos (original, no se toca)
   function renderProducts() {
+    // Cambio hecho por Luis:
+    // Validar que productsGrid exista para evitar errores en páginas como Home.html
+    if (!productsGrid) return;
     productsGrid.innerHTML = PRODUCTS.map(
       (product) => `
       <div class="product-card">
         <img src="${product.image}" alt="${product.name}" class="product-img">
         <h3>${product.name}</h3>
         <p class="product-price">$${product.price.toFixed(2)}</p>
-        <button class="btn-primary" data-id="${product.id}">Agregar al Carrito</button>
+        <button class="btn-primary" data-id="${
+          product.id
+        }">Agregar al Carrito</button>
       </div>
     `
     ).join("");
 
     // Agregar event listeners a los botones
-    productsGrid.querySelectorAll('.btn-primary').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = parseInt(this.getAttribute('data-id'));
-        const product = PRODUCTS.find(p => p.id === productId);
+    productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
+      button.addEventListener("click", function () {
+        const productId = parseInt(this.getAttribute("data-id"));
+        const product = PRODUCTS.find((p) => p.id === productId);
         if (product) {
           addToCart(product);
         }
@@ -196,21 +206,25 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    productsGrid.innerHTML = list.map(
-      (product) => `
+    productsGrid.innerHTML = list
+      .map(
+        (product) => `
       <div class="product-card">
         <img src="${product.image}" alt="${product.name}" class="product-img">
         <h3>${product.name}</h3>
         <p class="product-price">$${product.price.toFixed(2)}</p>
-        <button class="btn-primary" data-id="${product.id}">Agregar al Carrito</button>
+        <button class="btn-primary" data-id="${
+          product.id
+        }">Agregar al Carrito</button>
       </div>
     `
-    ).join("");
+      )
+      .join("");
 
-    productsGrid.querySelectorAll('.btn-primary').forEach(button => {
-      button.addEventListener('click', function() {
-        const productId = parseInt(this.getAttribute('data-id'));
-        const product = PRODUCTS.find(p => p.id === productId);
+    productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
+      button.addEventListener("click", function () {
+        const productId = parseInt(this.getAttribute("data-id"));
+        const product = PRODUCTS.find((p) => p.id === productId);
         if (product) {
           addToCart(product);
         }
@@ -225,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       renderProducts(); // back to full list
       return;
     }
-    const filtrados = PRODUCTS.filter(p =>
+    const filtrados = PRODUCTS.filter((p) =>
       (p.name || "").toLowerCase().includes(t)
     );
     renderFilteredProducts(filtrados);
@@ -257,34 +271,42 @@ document.addEventListener("DOMContentLoaded", function () {
   // Configurar botones del header
   function setupHeaderButtons() {
     // Botón de carrito en el header
-    const cartButton = document.getElementById('btn-cart');
+    const cartButton = document.getElementById("btn-cart");
     if (cartButton) {
-      cartButton.addEventListener('click', function() {
-        window.location.href = 'carrito.html';
+      cartButton.addEventListener("click", function () {
+        window.location.href = "carrito.html";
       });
     }
 
     // Botón de login
-    const loginButton = document.getElementById('btn-login');
+    const loginButton = document.getElementById("btn-login");
+    const userProfileImg = document.getElementById("user-profile-img");
+
     if (loginButton) {
       const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
       const user = JSON.parse(localStorage.getItem("currentUser"));
-      
+
       if (isLoggedIn && user) {
         const userNameSpan = loginButton.querySelector("#user-name");
         if (userNameSpan) {
-          userNameSpan.textContent = user.name.split(" ")[0];
+          userNameSpan.textContent =
+            user.nombreUsuario || user.name || "Usuario";
         }
+
+        // Mostrar foto de perfil si existe
+        const savedPhoto = localStorage.getItem("userProfilePhoto");
+        if (savedPhoto && userProfileImg) {
+          userProfileImg.src = savedPhoto;
+          userProfileImg.style.padding = "0";
+          userProfileImg.style.border = "2px solid #ff6b35";
+        }
+
         loginButton.onclick = () => {
-          if (confirm("¿Deseas cerrar sesión?")) {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("currentUser");
-            window.location.reload();
-          }
+          window.location.href = "perfil.html";
         };
       } else {
         loginButton.onclick = () => {
-          window.location.href = 'auth.html';
+          window.location.href = "auth.html";
         };
       }
     }

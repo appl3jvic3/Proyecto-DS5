@@ -8,6 +8,20 @@
 .header-top .icon-btn {
   filter: invert(54%) sepia(92%) saturate(749%) hue-rotate(347deg)
     brightness(101%) contrast(101%);
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+/* Foto de perfil de usuario (sobrescribe estilos cuando hay foto) */
+.header-top .user-profile-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: none;
+  border: 2px solid #ff6b35;
+  padding: 0;
 }
 /* Redes sociales en el footer en horizontal */
 .footer-social {

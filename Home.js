@@ -46,9 +46,9 @@
 
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartCount();
-    
+
     // Feedback visual
-    alert(`✅ ${product.name} agregado al carrito`);
+    alert(`${product.name} agregado al carrito`);
   }
 
   function updateCartCount() {
@@ -62,17 +62,28 @@
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const user = JSON.parse(localStorage.getItem("currentUser"));
     const loginBtn = document.getElementById("btn-login");
+    const userProfileImg = document.getElementById("user-profile-img");
 
     if (isLoggedIn && user && loginBtn) {
       const userNameSpan = loginBtn.querySelector("span") || loginBtn;
-      userNameSpan.textContent = user.name.split(" ")[0];
-      loginBtn.onclick = () => {
-        if (confirm("¿Deseas cerrar sesión?")) {
-          localStorage.removeItem("isLoggedIn");
-          localStorage.removeItem("currentUser");
-          window.location.reload();
-        }
-      };
+      // Mostrar el nombre de usuario
+      userNameSpan.textContent = user.nombreUsuario || user.name || "Usuario";
+
+      // Mostrar foto de perfil si existe
+      const savedPhoto = localStorage.getItem("userProfilePhoto");
+      if (savedPhoto && userProfileImg) {
+        userProfileImg.src = savedPhoto;
+        userProfileImg.style.width = "28px";
+        userProfileImg.style.height = "28px";
+        userProfileImg.style.borderRadius = "50%";
+        userProfileImg.style.objectFit = "cover";
+        userProfileImg.style.padding = "0";
+        userProfileImg.style.border = "2px solid #ff6b35";
+        userProfileImg.style.filter = "none";
+      }
+
+      // Al hacer clic, ir a la página de perfil
+      loginBtn.onclick = () => (window.location.href = "perfil.html");
     }
   }
 
@@ -107,7 +118,9 @@
   /* ===== NUEVO: Búsqueda global en Home usando TODOS los productos de productos.js ===== */
 
   // Usa la lista global expuesta por productos.js si existe; si no, usa los 4 del Home.
-  const ALL = Array.isArray(window.ALL_PRODUCTS) ? window.ALL_PRODUCTS : products;
+  const ALL = Array.isArray(window.ALL_PRODUCTS)
+    ? window.ALL_PRODUCTS
+    : products;
 
   const homeGrid = document.getElementById("home-products-grid");
   const searchInput = document.getElementById("search-input");
@@ -123,14 +136,20 @@
       `;
       return;
     }
-    homeGrid.innerHTML = list.map(p => `
+    homeGrid.innerHTML = list
+      .map(
+        (p) => `
       <div class="product-card">
-        <img src="${p.image}" alt="${p.name}" class="product-img" onerror="this.src='img/productos/default-product.jpg'">
+        <img src="${p.image}" alt="${
+          p.name
+        }" class="product-img" onerror="this.src='img/productos/default-product.jpg'">
         <h3>${p.name}</h3>
         <p class="product-price">$${Number(p.price).toFixed(2)}</p>
         <a class="btn-primary" href="productos.html#${p.id}">Ver producto</a>
       </div>
-    `).join("");
+    `
+      )
+      .join("");
   }
 
   function buscarEnHome(term) {
@@ -140,7 +159,9 @@
       renderHome(ALL.slice(0, Math.max(4, ALL.length ? 4 : 0)));
       return;
     }
-    const filtrados = ALL.filter(p => (p.name || "").toLowerCase().includes(t));
+    const filtrados = ALL.filter((p) =>
+      (p.name || "").toLowerCase().includes(t)
+    );
     renderHome(filtrados);
   }
 
@@ -149,8 +170,8 @@
     btnSearch.addEventListener("click", () => buscarEnHome(searchInput.value));
   }
   if (searchInput && homeGrid) {
-    searchInput.addEventListener("input", e => buscarEnHome(e.target.value));
-    searchInput.addEventListener("keydown", e => {
+    searchInput.addEventListener("input", (e) => buscarEnHome(e.target.value));
+    searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
         buscarEnHome(searchInput.value);
