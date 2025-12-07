@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Manejar envío de formularios
     if (loginForm) {
     loginForm.addEventListener("submit", async function(e) {
-        e. preventDefault();
+        e.preventDefault();
         
         const correo = document.getElementById("login-email").value;
         const contrasena = document.getElementById("login-password").value;
