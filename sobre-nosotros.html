@@ -1,101 +1,121 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <!-- Configuración básica del documento -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description"
-      content="Productos - La Esquina Geek. Explora nuestra colección de cartas coleccionables, figuras y más."
-    />
 
-    <!-- Título que aparece en la pestaña -->
-    <title>Sobre Nosotros - La Esquina Geek</title>
+<head>
+  <!-- Configuración básica del documento -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Productos - La Esquina Geek. Explora nuestra colección de cartas coleccionables, figuras y más." />
 
-    <!-- Icono de la pestaña -->
-    <link
-      rel="icon"
-      href="img/favicon/favicon.ico"
-      sizes="32x32"
-      type="image/png"
-    />
+  <!-- Título que aparece en la pestaña -->
+  <title>Sobre Nosotros - La Esquina Geek</title>
 
-    <!-- Fuentes de Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Icono de la pestaña -->
+  <link rel="icon" href="img/favicon/favicon.ico" sizes="32x32" type="image/png" />
 
-    <!-- Archivos de estilos CSS -->
-    <link rel="stylesheet" href="Home.css" />
-    <link rel="stylesheet" href="sobre-nosotros.css" />
-  </head>
+  <!-- Fuentes de Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet" />
 
-  <body>
-    <!-- Se implementa el mismo header de Home.html y productos.html -->
-    <header class="header">
-      <div class="logo">
-        <img src="img/logo.png" alt="Logo de la Esquina Geek" class="logo-img"
-            style="width: 38px; height: 38px; vertical-align: middle; margin-right: 10px;"/>
-        <h1 style="display: inline; vertical-align: middle">La Esquina Geek</h1>
+  <!-- Archivos de estilos CSS -->
+  <link rel="stylesheet" href="Home.css" />
+  <link rel="stylesheet" href="sobre-nosotros.css" />
+</head>
+
+<body>
+  <!-- Se implementa el mismo header de Home.html y productos.html -->
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <!-- Barra de búsqueda (IDs correctos para JS: search-input y btn-search) -->
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="Buscar productos..." class="search-input">
+        <button class="search-btn" id="btn-search" aria-label="Buscar">
+          <img src="img/iconos/buscar.png" alt="Buscar" class="icon-btn"
+            style="width: 20px; height: 20px; vertical-align: middle;">
+        </button>
       </div>
-      <nav class="main-nav">
+
+      <div class="logo">
+        <img src="img/logo.png" alt="Logo La Esquina Geek" class="logo-img"
+          style="width:38px;height:38px;vertical-align:middle;margin-right:10px;">
+        <h1 style="display:inline;vertical-align:middle;">La Esquina Geek</h1>
+      </div>
+
+      <div class="header-actions">
+        <button class="cart-btn" id="btn-cart" onclick="window.location.href='carrito.html'">
+          <img src="img/iconos/carrito.png" alt="Carrito" class="icon-btn"
+            style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+          Carrito (<span id="cart-count">0</span>)
+        </button>
+        <button class="login-btn" id="btn-login">
+          <img src="img/iconos/usuario.png" alt="Login" class="icon-btn"
+            style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+          <span id="user-name">Login</span>
+        </button>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="Home.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="sobre-nosotros.html">Sobre Nosotros</a>
+    </nav>
+  </header>
+
+  <!-- Sección de los Integrantes del Equipo -->
+  <main>
+    <section class="equipo-section">
+      <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin-bottom: 1rem; margin-top:2rem;">Miembros
+        del Equipo</h2>
+      <div class="miembros-grid" id="miembros-grid">
+        <!-- Las tarjetas de los 5 miembros se llenan con sobre-nosotros.js-->
+      </div>
+    </section>
+  </main>
+
+  <!-- Mismo footer que Home.html-->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Contacto</h3>
+        <p>Teléfono: 641-754-0072</p>
+        <p>Email: soporte@laesquinageek.com</p>
+        <p>Dirección: Panamá, Vía España</p>
+      </div>
+      <div class="footer-section">
+        <h3>Enlaces</h3>
         <a href="Home.html">Inicio</a>
         <a href="productos.html">Productos</a>
         <a href="sobre-nosotros.html">Sobre Nosotros</a>
-      </nav>
-    </header>
-
-    <!-- Sección de los Integrantes del Equipo -->
-     <main>
-        <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin-bottom: 1rem; margin-top:2rem;">Miembros del Equipo</h2>
-        <div class="miembros-grid" id="miembros-grid">
-            <!-- Las tarjetas de los 5 miembros se llenan con sobre-nosotros.js-->
+      </div>
+      <div class="footer-section">
+        <h3>Redes Sociales</h3>
+        <div class="footer-social">
+          <a href="https://facebook.com/laesquinageek" target="_blank" aria-label="Facebook">
+            <img src="img/iconos/RS/facebook.png" alt="Facebook" class="icon-btn" style="width: 28px; height: 28px;">
+          </a>
+          <a href="https://twitter.com/laesquinageek" target="_blank" aria-label="Twitter">
+            <img src="img/iconos/RS/X.png" alt="Twitter" class="icon-btn" style="width: 28px; height: 28px;">
+          </a>
+          <a href="https://instagram.com/laesquinageek" target="_blank" aria-label="Instagram">
+            <img src="img/iconos/RS/instagram.png" alt="Instagram" class="icon-btn" style="width: 28px; height: 28px;">
+          </a>
+          <a href="https://tiktok.com/@laesquinageek" target="_blank" aria-label="TikTok">
+            <img src="img/iconos/RS/tiktok.png" alt="TikTok" class="icon-btn" style="width: 28px; height: 28px;">
+          </a>
         </div>
-     </main>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 La Esquina Geek. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
-     <!-- Mismo footer que Home.html-->
-      <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Contacto</h3>
-                <p>📞 641-754-0072</p>
-                <p>✉️ soporte@laesquinageek.com</p>
-                <p>📍 Panamá, Vía España</p>
-            </div>
-            <div class="footer-section">
-                <h3>Enlaces</h3>
-                <a href="Home.html">Inicio</a>
-                <a href="productos.html">Productos</a>
-                <a href="sobre-nosotros.html">Sobre Nosotros</a>
-            </div>
-            <div class="footer-section">
-                <h3>Redes Sociales</h3>
-                <div class="footer-social">
-                    <a href="https://facebook.com/laesquinageek" target="_blank" aria-label="Facebook">
-                        <img src="img/iconos/RS/facebook.png" alt="Facebook" class="icon-btn"
-                            style="width: 28px; height: 28px;">
-                    </a>
-                    <a href="https://twitter.com/laesquinageek" target="_blank" aria-label="Twitter">
-                        <img src="img/iconos/RS/X.png" alt="Twitter" class="icon-btn"
-                            style="width: 28px; height: 28px;">
-                    </a>
-                    <a href="https://instagram.com/laesquinageek" target="_blank" aria-label="Instagram">
-                        <img src="img/iconos/RS/instagram.png" alt="Instagram" class="icon-btn"
-                            style="width: 28px; height: 28px;">
-                    </a>
-                    <a href="https://tiktok.com/@laesquinageek" target="_blank" aria-label="TikTok">
-                        <img src="img/iconos/RS/tiktok.png" alt="TikTok" class="icon-btn"
-                            style="width: 28px; height: 28px;">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 La Esquina Geek. Todos los derechos reservados.</p>
-        </div>
-    </footer>
+  <script src="productos.js"></script>
+  <script src="sobre-nosotros.js"></script>
+</body>
 
-    <script src = "sobre-nosotros.js"></script>
-  </body>
 </html>

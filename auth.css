@@ -53,11 +53,11 @@ body {
     padding: 0.6rem 1rem;
     font-size: 0.875rem;
   }
-  
+
   .btn-back span {
     display: none;
   }
-  
+
   .btn-back svg {
     width: 1.5rem;
     height: 1.5rem;
@@ -91,7 +91,7 @@ body {
   border: 2px solid #ff6b35;
   color: #ff6b35;
   font-size: 1rem;
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-weight: 600;
   border-radius: 0.5rem;
   padding: 0.7rem 1.5rem;
@@ -124,7 +124,7 @@ body {
 }
 
 .auth-form-simple h1 {
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Orbitron", sans-serif;
   font-size: 1.8rem;
   color: #ff6b35;
   text-align: center;
@@ -141,7 +141,7 @@ body {
   font-size: 1rem;
   background: #0f1b2e;
   color: #ffffff;
-  font-family: "Poppins", sans-serif;
+  font-family: "Orbitron", sans-serif;
   transition: all 0.3s ease;
   box-sizing: border-box;
 }
@@ -164,7 +164,7 @@ body {
   padding: 0.9rem 2rem;
   font-size: 1rem;
   font-weight: 700;
-  font-family: "Rajdhani", sans-serif;
+  font-family: "Orbitron", sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
@@ -187,6 +187,7 @@ body {
   margin: 0.5rem 0 0 0;
   text-decoration: none;
   transition: color 0.3s ease;
+  font-family: "Orbitron", sans-serif;
 }
 
 .forgot-password:hover {
@@ -199,26 +200,26 @@ body {
     padding: 1.5rem 1.2rem;
     margin: 0;
   }
-  
+
   .toggle-btn {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
     min-width: 120px;
   }
-  
+
   .auth-form-simple h1 {
     font-size: 1.5rem;
   }
-  
+
   .auth-toggle-btns {
     gap: 0.5rem;
   }
 }
 /* Wrapper para organizar botones y formulario */
 .auth-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 400px;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  width: 100%;
 }

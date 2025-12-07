@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>La Esquina Geek</title>
   <link rel="icon" href="img/favicon/favicon.ico" sizes="32x32" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="Home.css">
 </head>
 
@@ -18,22 +19,26 @@
       <div class="search-container">
         <input type="text" id="search-input" placeholder="Buscar productos..." class="search-input">
         <button class="search-btn" id="btn-search" aria-label="Buscar">
-          <img src="img/iconos/buscar.png" alt="Buscar" class="icon-btn" style="width: 20px; height: 20px; vertical-align: middle;">
+          <img src="img/iconos/buscar.png" alt="Buscar" class="icon-btn"
+            style="width: 20px; height: 20px; vertical-align: middle;">
         </button>
       </div>
 
       <div class="logo">
-        <img src="img/logo.png" alt="Logo La Esquina Geek" class="logo-img" style="width:38px;height:38px;vertical-align:middle;margin-right:10px;">
+        <img src="img/logo.png" alt="Logo La Esquina Geek" class="logo-img"
+          style="width:38px;height:38px;vertical-align:middle;margin-right:10px;">
         <h1 style="display:inline;vertical-align:middle;">La Esquina Geek</h1>
       </div>
 
       <div class="header-actions">
         <button class="cart-btn" id="btn-cart" onclick="window.location.href='carrito.html'">
-          <img src="img/iconos/carrito.png" alt="Carrito" class="icon-btn" style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+          <img src="img/iconos/carrito.png" alt="Carrito" class="icon-btn"
+            style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
           Carrito (<span id="cart-count">0</span>)
         </button>
         <button class="login-btn" id="btn-login">
-          <img src="img/iconos/usuario.png" alt="Login" class="icon-btn" style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
+          <img src="img/iconos/usuario.png" alt="Login" class="icon-btn"
+            style="width: 22px; height: 22px; vertical-align: middle; margin-right: 6px;">
           <span id="user-name">Login</span>
         </button>
       </div>
@@ -52,36 +57,38 @@
       <p>Descubre los mejores coleccionables y productos exclusivos para verdaderos fanáticos.</p>
     </section>
 
-    <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin-bottom: 1rem;">Productos Destacados</h2>
+    <section class="productos-destacados">
+      <h2 style="font-family: 'Rajdhani', sans-serif; font-size: 2rem; margin-bottom: 1rem;">Productos Destacados</h2>
 
-    <!-- Grid del inicio con ID esperado por home.js -->
-    <div id="home-products-grid" class="products-grid">
-      <!-- Render inicial: se reemplaza dinámicamente por home.js -->
-      <div class="product-card">
-        <img src="img/productos/charizard.png" alt="Charizard VMAX" class="product-img">
-        <h3>Charizard VMAX</h3>
-        <p class="product-price">$120.99</p>
-        <a class="btn-primary" href="productos.html#1">Ver producto</a>
+      <!-- Grid del inicio con ID esperado por home.js -->
+      <div id="home-products-grid" class="products-grid">
+        <!-- Render inicial: se reemplaza dinámicamente por home.js -->
+        <div class="product-card">
+          <img src="img/productos/charizard.png" alt="Charizard VMAX" class="product-img">
+          <h3>Charizard VMAX</h3>
+          <p class="product-price">$120.99</p>
+          <a class="btn-primary" href="productos.html#1">Ver producto</a>
+        </div>
+        <div class="product-card">
+          <img src="img/productos/gundam-astray.jpg" alt="Gundam Astray" class="product-img">
+          <h3>Gundam Astray</h3>
+          <p class="product-price">$75.50</p>
+          <a class="btn-primary" href="productos.html#2">Ver producto</a>
+        </div>
+        <div class="product-card">
+          <img src="img/productos/blue-eyes.jpg" alt="Blue-Eyes Dragon" class="product-img">
+          <h3>Blue-Eyes Dragon</h3>
+          <p class="product-price">$85.99</p>
+          <a class="btn-primary" href="productos.html#4">Ver producto</a>
+        </div>
+        <div class="product-card">
+          <img src="img/productos/iron-man-hot-toys.jpg" alt="Iron Man Hot Toys" class="product-img">
+          <h3>Iron Man Hot Toys</h3>
+          <p class="product-price">$425.00</p>
+          <a class="btn-primary" href="productos.html#6">Ver producto</a>
+        </div>
       </div>
-      <div class="product-card">
-        <img src="img/productos/gundam-astray.jpg" alt="Gundam Astray" class="product-img">
-        <h3>Gundam Astray</h3>
-        <p class="product-price">$75.50</p>
-        <a class="btn-primary" href="productos.html#2">Ver producto</a>
-      </div>
-      <div class="product-card">
-        <img src="img/productos/blue-eyes.jpg" alt="Blue-Eyes Dragon" class="product-img">
-        <h3>Blue-Eyes Dragon</h3>
-        <p class="product-price">$85.99</p>
-        <a class="btn-primary" href="productos.html#4">Ver producto</a>
-      </div>
-      <div class="product-card">
-        <img src="img/productos/iron-man-hot-toys.jpg" alt="Iron Man Hot Toys" class="product-img">
-        <h3>Iron Man Hot Toys</h3>
-        <p class="product-price">$425.00</p>
-        <a class="btn-primary" href="productos.html#6">Ver producto</a>
-      </div>
-    </div>
+    </section>
 
     <!-- SECCIÓN DE CONFIANZA -->
     <section class="confianza-section">
@@ -110,9 +117,9 @@
     <div class="footer-content">
       <div class="footer-section">
         <h3>Contacto</h3>
-        <p>📞 641-754-0072</p>
-        <p>✉️ soporte@laesquinageek.com</p>
-        <p>📍 Panamá, Vía España</p>
+        <p>Teléfono: 641-754-0072</p>
+        <p>Email: soporte@laesquinageek.com</p>
+        <p>Dirección: Panamá, Vía España</p>
       </div>
       <div class="footer-section">
         <h3>Enlaces</h3>
@@ -147,4 +154,5 @@
   <script src="productos.js"></script>
   <script src="home.js"></script>
 </body>
+
 </html>
