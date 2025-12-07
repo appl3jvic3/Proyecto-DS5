@@ -50,8 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 localStorage. setItem('isLoggedIn', 'true');
                 localStorage.setItem('currentUser', JSON.stringify({
                 usuarioId: data.user.usuarioId,
-                name: data.user.nombreUsuario,
-                email: data.user.correo
+                nombreUsuario: data.user.name,
+                correo: data.user.email
         }));
                 window.location. href = 'Home.html';
             } else {
