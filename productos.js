@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
       id: 11,
       name: "Gamecube Console Platinum",
       price: 267.0,
-      image: "img/productos/Gamecube Console Platinum.jpg",
+      image: "img/productos/gamecube.jpg",
     },
     {
       id: 12,
@@ -165,38 +165,157 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cartCountElement) cartCountElement.textContent = totalItems;
   }
 
-  // Renderizar productos (original, no se toca)
-  function renderProducts() {
-    // Cambio hecho por Luis:
+  // Cambios hechos por Luis: Cargar productos desde API con información de stock
+  async function renderProducts() {
     // Validar que productsGrid exista para evitar errores en páginas como Home.html
     if (!productsGrid) return;
-    productsGrid.innerHTML = PRODUCTS.map(
-      (product) => `
-      <div class="product-card">
-        <img src="${product.image}" alt="${product.name}" class="product-img">
-        <h3>${product.name}</h3>
-        <p class="product-price">$${product.price.toFixed(2)}</p>
-        <button class="btn-primary" data-id="${
-          product.id
-        }">Agregar al Carrito</button>
-      </div>
-    `
-    ).join("");
 
-    // Agregar event listeners a los botones
-    productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
-      button.addEventListener("click", function () {
-        const productId = parseInt(this.getAttribute("data-id"));
-        const product = PRODUCTS.find((p) => p.id === productId);
-        if (product) {
-          addToCart(product);
-        }
+    try {
+      // Obtener productos desde la API
+      const response = await fetch(
+        getApiUrl(API_CONFIG.ENDPOINTS.PRODUCTOS.GET_ALL)
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al cargar productos");
+      }
+
+      const productosAPI = await response.json();
+
+      // Cambios hechos por Luis: Debug para ver estructura del API
+      console.log("Productos del API:", productosAPI);
+      if (productosAPI.length > 0) {
+        console.log("Primer producto:", productosAPI[0]);
+      }
+
+      // Cambios hechos por Luis: Generar HTML con información de stock
+      // Solo mostrar productos que existan en el array local PRODUCTS
+      productsGrid.innerHTML = productosAPI
+        .filter((producto) => {
+          const id = producto.productoId || producto.id || producto.ProductoId;
+          return PRODUCTS.find((p) => p.id === id); // Solo incluir si existe localmente
+        })
+        .map((producto) => {
+          // Mapear propiedades con múltiples posibles nombres
+          const id = producto.productoId || producto.id || producto.ProductoId;
+          const stock =
+            producto.cantidadDisponible ||
+            producto.stock ||
+            producto.CantidadDisponible ||
+            0;
+
+          // Cambios hechos por Luis: Usar datos del array local PRODUCTS
+          const productoLocal = PRODUCTS.find((p) => p.id === id);
+          const nombre = productoLocal.name;
+          const precio = productoLocal.price;
+          const imagen = productoLocal.image;
+
+          const isOutOfStock = stock === 0;
+          const isLowStock = stock > 0 && stock <= 5;
+
+          // Cambios hechos por Luis: Determinar badge de stock
+          let stockBadge = "";
+          if (isOutOfStock) {
+            stockBadge =
+              '<span class="stock-badge out-of-stock">AGOTADO</span>';
+          } else if (isLowStock) {
+            stockBadge =
+              '<span class="stock-badge low-stock">ÚLTIMAS UNIDADES</span>';
+          }
+
+          return `
+            <div class="product-card ${isOutOfStock ? "disabled" : ""}">
+              ${stockBadge}
+              <img src="${imagen}" 
+                   alt="${nombre}" 
+                   class="product-img">
+              <h3>${nombre}</h3>
+              <p class="product-price">$${Number(precio).toFixed(2)}</p>
+              <p class="product-stock">Stock: ${stock} unidades</p>
+              <button class="btn-primary" 
+                      data-id="${id}" 
+                      ${isOutOfStock ? "disabled" : ""}>
+                ${isOutOfStock ? "Agotado" : "Agregar al Carrito"}
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+
+      // Agregar event listeners a los botones
+      productsGrid
+        .querySelectorAll(".btn-primary:not([disabled])")
+        .forEach((button) => {
+          button.addEventListener("click", function () {
+            const productId = parseInt(this.getAttribute("data-id"));
+            const producto = productosAPI.find((p) => {
+              const id = p.productoId || p.id || p.ProductoId;
+              return id === productId;
+            });
+
+            if (producto) {
+              const stock =
+                producto.cantidadDisponible ||
+                producto.stock ||
+                producto.CantidadDisponible ||
+                0;
+              if (stock > 0) {
+                // Mapear propiedades con nombres alternativos
+                const id =
+                  producto.productoId || producto.id || producto.ProductoId;
+                const nombre =
+                  producto.nombreProducto ||
+                  producto.name ||
+                  producto.NombreProducto;
+                const precio =
+                  producto.precio || producto.price || producto.Precio;
+
+                // Cambios hechos por Luis: Usar imagen del array local PRODUCTS
+                const productoLocal = PRODUCTS.find((p) => p.id === id);
+                const imagen =
+                  productoLocal?.image || "img/productos/default.png";
+
+                // Convertir al formato esperado por addToCart
+                const product = {
+                  id: id,
+                  productoId: id,
+                  name: nombre,
+                  price: precio,
+                  image: imagen,
+                };
+                addToCart(product);
+              }
+            }
+          });
+        });
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+      // Fallback a productos locales si falla la API
+      productsGrid.innerHTML = PRODUCTS.map(
+        (product) => `
+        <div class="product-card">
+          <img src="${product.image}" alt="${product.name}" class="product-img">
+          <h3>${product.name}</h3>
+          <p class="product-price">$${product.price.toFixed(2)}</p>
+          <button class="btn-primary" data-id="${
+            product.id
+          }">Agregar al Carrito</button>
+        </div>
+      `
+      ).join("");
+
+      productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
+        button.addEventListener("click", function () {
+          const productId = parseInt(this.getAttribute("data-id"));
+          const product = PRODUCTS.find((p) => p.id === productId);
+          if (product) addToCart(product);
+        });
       });
-    });
+    }
   }
 
-  // Renderizar lista filtrada sin modificar renderProducts()
-  function renderFilteredProducts(list) {
+  // Cambios hechos por Luis: Renderizar lista filtrada con información de stock
+  async function renderFilteredProducts(list) {
     if (!list || list.length === 0) {
       productsGrid.innerHTML = `
         <div class="empty-results" style="text-align:center;color:#a8b5c7;padding:1rem;">
@@ -206,30 +325,93 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    productsGrid.innerHTML = list
-      .map(
-        (product) => `
-      <div class="product-card">
-        <img src="${product.image}" alt="${product.name}" class="product-img">
-        <h3>${product.name}</h3>
-        <p class="product-price">$${product.price.toFixed(2)}</p>
-        <button class="btn-primary" data-id="${
-          product.id
-        }">Agregar al Carrito</button>
-      </div>
-    `
-      )
-      .join("");
+    try {
+      // Obtener datos actualizados del API
+      const response = await fetch(
+        getApiUrl(API_CONFIG.ENDPOINTS.PRODUCTOS.GET_ALL)
+      );
+      const productosAPI = await response.json();
 
-    productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
-      button.addEventListener("click", function () {
-        const productId = parseInt(this.getAttribute("data-id"));
-        const product = PRODUCTS.find((p) => p.id === productId);
-        if (product) {
-          addToCart(product);
-        }
+      productsGrid.innerHTML = list
+        .map((product) => {
+          // Cambios hechos por Luis: Buscar info de stock del API con mapeo flexible
+          const productoAPI = productosAPI.find((p) => {
+            const apiId = p.productoId || p.id || p.ProductoId;
+            return apiId === product.id;
+          });
+          const stock =
+            productoAPI?.cantidadDisponible ||
+            productoAPI?.stock ||
+            productoAPI?.CantidadDisponible ||
+            0;
+          const isOutOfStock = stock === 0;
+          const isLowStock = stock > 0 && stock <= 5;
+
+          let stockBadge = "";
+          if (isOutOfStock) {
+            stockBadge =
+              '<span class="stock-badge out-of-stock">AGOTADO</span>';
+          } else if (isLowStock) {
+            stockBadge =
+              '<span class="stock-badge low-stock">ÚLTIMAS UNIDADES</span>';
+          }
+
+          return `
+            <div class="product-card ${isOutOfStock ? "disabled" : ""}">
+              ${stockBadge}
+              <img src="${product.image}" alt="${
+            product.name
+          }" class="product-img">
+              <h3>${product.name}</h3>
+              <p class="product-price">$${product.price.toFixed(2)}</p>
+              <p class="product-stock">Stock: ${stock} unidades</p>
+              <button class="btn-primary" 
+                      data-id="${product.id}" 
+                      ${isOutOfStock ? "disabled" : ""}>
+                ${isOutOfStock ? "Agotado" : "Agregar al Carrito"}
+              </button>
+            </div>
+          `;
+        })
+        .join("");
+
+      productsGrid
+        .querySelectorAll(".btn-primary:not([disabled])")
+        .forEach((button) => {
+          button.addEventListener("click", function () {
+            const productId = parseInt(this.getAttribute("data-id"));
+            const product = list.find((p) => p.id === productId);
+            if (product) {
+              addToCart(product);
+            }
+          });
+        });
+    } catch (error) {
+      console.error("Error al cargar stock:", error);
+      // Fallback sin información de stock
+      productsGrid.innerHTML = list
+        .map(
+          (product) => `
+        <div class="product-card">
+          <img src="${product.image}" alt="${product.name}" class="product-img">
+          <h3>${product.name}</h3>
+          <p class="product-price">$${product.price.toFixed(2)}</p>
+          <button class="btn-primary" data-id="${
+            product.id
+          }">Agregar al Carrito</button>
+        </div>
+      `
+        )
+        .join("");
+
+      productsGrid.querySelectorAll(".btn-primary").forEach((button) => {
+        button.addEventListener("click", function () {
+          const productId = parseInt(this.getAttribute("data-id"));
+          const product = list.find((p) => p.id === productId);
+          if (product) addToCart(product);
+        });
       });
-    });
+    }
   }
 
   // Búsqueda en cliente usando PRODUCTS, sin tocar la API

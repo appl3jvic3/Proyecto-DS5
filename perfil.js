@@ -1,7 +1,11 @@
+// perfil.js - Gestion de la pagina de perfil del usuario
+// Cambios hechos por Luis:
+// - Actualizado para usar config.js en lugar de URL hardcodeada (linea 31)
+
 (function () {
   "use strict";
 
-  // Verificar si el usuario está logueado
+  // Verificar si el usuario esta logueado
   function checkAuth() {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     if (!isLoggedIn) {
@@ -12,33 +16,40 @@
     return true;
   }
 
-  // Cargar información del usuario
+  // Cargar informacion del usuario
   async function loadUserInfo() {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     console.log("Usuario cargado del localStorage:", user);
 
     if (!user || !user.usuarioId) {
-      console.log("No hay usuario válido, redirigiendo...");
+      console.log("No hay usuario válido, redirigiendo.. .");
       window.location.href = "auth.html";
       return;
     }
 
     // Si solo tenemos el usuarioId, obtener los datos completos de la API
+    // Esto puede pasar si el localStorage se limpio parcialmente o si hay datos incompletos
     if (!user.nombreUsuario || !user.correo) {
       console.log("Faltan datos del usuario, obteniendo de la API...");
       try {
-        const response = await fetch(
-          `https://localhost:7293/api/Auth/user/${user.usuarioId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
+        // CAMBIO HECHO POR LUIS:
+        // Usar endpoint desde config.js en lugar de URL hardcodeada
+        // Antes: `https://localhost:7293/api/Auth/user/${user.usuarioId}`
+        // Ahora: getApiUrl(API_CONFIG.ENDPOINTS.AUTH. GET_USER(user.usuarioId))
+        const url = getApiUrl(
+          API_CONFIG.ENDPOINTS.AUTH.GET_USER(user.usuarioId)
         );
+
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
 
         if (response.ok) {
           const userData = await response.json();
-          // Actualizar localStorage con datos completos
+
+          // Actualizar localStorage con datos completos obtenidos del API
           const fullUser = {
             usuarioId: userData.usuarioId,
             nombreUsuario: userData.nombreUsuario,
@@ -48,13 +59,14 @@
           displayUserInfo(fullUser);
         } else {
           console.error("Error obteniendo datos del usuario");
-          displayUserInfo(user); // Mostrar lo que tenemos
+          displayUserInfo(user); // Mostrar lo que tenemos aunque sea incompleto
         }
       } catch (error) {
         console.error("Error:", error);
-        displayUserInfo(user); // Mostrar lo que tenemos
+        displayUserInfo(user); // Mostrar lo que tenemos aunque sea incompleto
       }
     } else {
+      // Si ya tenemos todos los datos, mostrarlos directamente
       displayUserInfo(user);
     }
   }
@@ -70,13 +82,13 @@
     if (headerUserName)
       headerUserName.textContent = user.nombreUsuario || "Usuario";
 
-    // Cargar foto de perfil guardada
+    // Cargar foto de perfil guardada en localStorage
     const savedPhoto = localStorage.getItem("userProfilePhoto");
     if (savedPhoto) {
       const profilePhoto = document.getElementById("profile-photo");
       if (profilePhoto) profilePhoto.src = savedPhoto;
 
-      // Mostrar foto en el header también
+      // Mostrar foto en el header tambien
       if (userProfileImg) {
         userProfileImg.src = savedPhoto;
         userProfileImg.style.padding = "0";
@@ -105,7 +117,7 @@
             return;
           }
 
-          // Validar tamaño (máximo 2MB)
+          // Validar tamaño (maximo 2MB)
           if (file.size > 2 * 1024 * 1024) {
             alert("La imagen es muy grande. El tamaño máximo es 2MB");
             return;
@@ -119,7 +131,7 @@
               profilePhoto.src = imageUrl;
               profilePhoto.style.padding = "0"; // Remover padding cuando hay imagen personalizada
             }
-            // Guardar en localStorage
+            // Guardar en localStorage para persistencia
             localStorage.setItem("userProfilePhoto", imageUrl);
           };
           reader.readAsDataURL(file);
@@ -128,7 +140,7 @@
     }
   }
 
-  // Actualizar contador del carrito
+  // Actualizar contador del carrito en el header
   function updateCartCount() {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -136,9 +148,10 @@
     if (cartCountElement) cartCountElement.textContent = totalItems;
   }
 
-  // Cerrar sesión
+  // Cerrar sesion
   function logout() {
     if (confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+      // Limpiar todos los datos del usuario del localStorage
       localStorage.removeItem("isLoggedIn");
       localStorage.removeItem("currentUser");
       localStorage.removeItem("token");
@@ -147,12 +160,12 @@
     }
   }
 
-  // Inicializar
+  // Inicializar la pagina
   function init() {
-    // Verificar autenticación
+    // Verificar autenticacion
     if (!checkAuth()) return;
 
-    // Cargar información del usuario
+    // Cargar informacion del usuario
     loadUserInfo();
 
     // Actualizar contador del carrito
@@ -161,14 +174,14 @@
     // Manejar cambio de foto
     handlePhotoUpload();
 
-    // Botón de cerrar sesión
+    // Boton de cerrar sesion
     const logoutBtn = document.getElementById("btn-logout");
     if (logoutBtn) {
       logoutBtn.addEventListener("click", logout);
     }
   }
 
-  // Ejecutar cuando el DOM esté listo
+  // Ejecutar cuando el DOM este listo
   document.readyState === "loading"
     ? document.addEventListener("DOMContentLoaded", init)
     : init();

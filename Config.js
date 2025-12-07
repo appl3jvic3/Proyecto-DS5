@@ -1,30 +1,54 @@
-// Configuración de la API
+// config.js - Configuracion centralizada de endpoints del API
+// Cambios hechos por Luis:
+// - Agregado endpoint GET_USER en seccion AUTH para obtener datos de usuario por ID
+
 const API_CONFIG = {
-    BASE_URL: 'https://localhost:7293/api',  // PUERTO DE LA API
+    BASE_URL: 'https://localhost:7293/api',
     ENDPOINTS: {
+        // Endpoints de autenticacion
         AUTH: {
             LOGIN: '/Auth/login',
-            REGISTER: '/Auth/register'
+            REGISTER: '/Auth/register',
+            
+            // AGREGADO POR LUIS:
+            // Endpoint para obtener informacion de un usuario especifico
+            // Usado en perfil.js cuando faltan datos del usuario en localStorage
+            // Uso: API_CONFIG.ENDPOINTS.AUTH. GET_USER(1) retorna "/Auth/user/1"
+            GET_USER: (userId) => `/Auth/user/${userId}`
         },
+        
+        // Endpoints de productos
         PRODUCTOS: {
             GET_ALL: '/Productos',
-            GET_BY_ID: (id) => `/Productos/${id}`
+            
+            // Agregado por Luis: Obtener producto individual por ID
+            // Usado en historial. js para obtener detalles del producto
+            GET_BY_ID: (productId) => `/Productos/${productId}`
         },
+        
+        // Endpoints de carrito
         CARRITO: {
             GET: '/Carrito',
             ADD: '/Carrito',
             CHECKOUT: '/Carrito/checkout',
+            
+            // Agregado por Luis: Obtener historial de compras por usuario
+            // Usado en historial.js para mostrar las ordenes del usuario
             GET_BY_USER: (userId) => `/Carrito/user/${userId}`
         },
+        
+        // Endpoints de historial (si los necesitas en el futuro)
         HISTORIAL: {
-            // Get orders by user (page & filters opcionales)
             GET_BY_USER: (userId, page = 1, pageSize = 10, from = '', to = '') =>
                 `/Historial/user/${userId}?page=${page}&pageSize=${pageSize}${from ? `&from=${encodeURIComponent(from)}` : ''}${to ? `&to=${encodeURIComponent(to)}` : ''}`,
-            // Get items for a specific order
             GET_ORDER: (orderId) => `/Historial/${orderId}`
         }
     }
 };
 
-// Helper para construir URLs
-const getApiUrl = (endpoint) => `${API_CONFIG.BASE_URL}${endpoint}`;
+// Funcion helper para construir URLs completas
+// Concatena la BASE_URL con el endpoint especificado
+// Ejemplo: getApiUrl('/Auth/login') retorna 'https://localhost:7293/api/Auth/login'
+function getApiUrl(endpoint) {
+    return `${API_CONFIG. BASE_URL}${endpoint}`;
+}
