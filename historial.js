@@ -59,45 +59,59 @@
             return;
         }
 
-        // Renderizar historial de órdenes
-        container.innerHTML = orderHistory.map(order => `
-            <div class="order-card">
-                <div class="order-header">
-                    <div>
-                        <div class="order-id">Orden #${order.numeroCompra}</div>
-                        <div class="order-date">${new Date(order.fechaCompra).toLocaleDateString("es-ES", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                        })}</div>
-                    </div>
-                    <div class="order-status status-entregado">Completado</div>
-                </div>
-                
-                <div class="order-summary">
-                    <div class="summary-item">
-                        <div class="summary-label">Items</div>
-                        <div class="summary-value">${order.itemsCount}</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Total</div>
-                        <div class="summary-value total">$${order.totalAmount.toFixed(2)}</div>
-                    </div>
-                </div>
+    function createOrderCard(order, index) {
+    const card = document. createElement("div");
+    card. className = "order-card";
 
-                <div class="order-actions">
-                    <button class="btn-view-details" data-order-id="${order.numeroCompra}">
-                        Ver Detalles
-                    </button>
-                </div>
+    const numeroCompra = order. numeroCompra || order.id || "N/A";
+    const fechaCompra = order.fechaCompra || new Date().toISOString();
+    const cantidad = order.cantidad || 0;
+    const precioTotal = order.precioTotal || 0;
 
-                <div class="order-items-container" id="items-${order.numeroCompra}" style="display: none;">
-                    <!-- Los items se cargarán aquí -->
-                </div>
+    card.innerHTML = `
+        <div class="order-header">
+            <div>
+                <div class="order-id">Orden #${numeroCompra}</div>
+                <div class="order-date">${new Date(fechaCompra).toLocaleDateString("es-ES", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}</div>
             </div>
-        `). join("");
+            <div class="order-status status-entregado">Completado</div>
+        </div>
+        
+        <div class="order-summary">
+            <div class="summary-item">
+                <div class="summary-label">Cantidad</div>
+                <div class="summary-value">${cantidad}</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Total</div>
+                <div class="summary-value total">$${Number(precioTotal).toFixed(2)}</div>
+            </div>
+        </div>
+
+        <div class="order-actions">
+            <button class="btn-view-details" id="btn-order-${index}">
+                Ver Detalles
+            </button>
+        </div>
+
+        <div class="order-items-container" id="items-${numeroCompra}" style="display: none;">
+            <!-- Los items se cargaran aqui -->
+        </div>
+    `;
+
+    // Agregar event listener directamente al boton creado
+    // Cambio hecho por Luis: Evita errores de querySelectorAll con selectores invalidos
+    const button = card. querySelector(`#btn-order-${index}`);
+    button.addEventListener("click", () => toggleOrderDetails(order));
+
+    return card;
+  }
 
         // Agregar event listeners para botones "Ver Detalles"
         document.querySelectorAll('. btn-view-details').forEach(button => {

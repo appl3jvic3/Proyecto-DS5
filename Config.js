@@ -7,12 +7,14 @@ const API_CONFIG = {
             REGISTER: '/Auth/register'
         },
         PRODUCTOS: {
-            GET_ALL: '/Productos'
+            GET_ALL: '/Productos',
+            GET_BY_ID: (id) => `/Productos/${id}`
         },
         CARRITO: {
             GET: '/Carrito',
             ADD: '/Carrito',
-            CHECKOUT: '/Carrito/checkout'
+            CHECKOUT: '/Carrito/checkout',
+            GET_BY_USER: (userId) => `/Carrito/user/${userId}`
         },
         HISTORIAL: {
             // Get orders by user (page & filters opcionales)
