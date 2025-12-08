@@ -32,7 +32,7 @@
       console.log("Obteniendo historial para usuario:", usuarioId);
 
       const url = getApiUrl(
-        API_CONFIG.ENDPOINTS.CARRITO.GET_BY_USER(usuarioId)
+        API_CONFIG.ENDPOINTS.HISTORIAL.GET_BY_USER(usuarioId)
       );
       console.log("URL de historial:", url);
 
@@ -83,11 +83,10 @@
     const card = document.createElement("div");
     card.className = "order-card";
 
-    const numeroCompra = order.numeroCompra || order.id || "N/A";
-    const fechaCompra =
-      order.fechaCompra || order.date || new Date().toISOString();
-    const cantidad = order.itemsCount || order.cantidad || 0;
-    const precioTotal = order.total || order.precioTotal || 0;
+    const numeroCompra = order. numeroCompra || "N/A";
+    const fechaCompra = order.fechaCompra || new Date().toISOString();
+    const cantidadItems = order.cantidadItems || 0;
+    const precioTotal = order. precioTotal || 0;
 
     card.innerHTML = `
         <div class="order-header">
@@ -133,103 +132,99 @@
     // Agregar event listener directamente al boton creado
     // Cambio hecho por Luis: Evita errores de querySelectorAll con selectores invalidos
     const button = card.querySelector(`#btn-order-${index}`);
-    button.addEventListener("click", () => toggleOrderDetails(order));
+    button.addEventListener("click", () => toggleOrderDetails(numeroCompra));
 
     return card;
   }
 
-  async function toggleOrderDetails(order) {
-    const numeroCompra = order.numeroCompra || order.id;
-    const itemsContainer = document.getElementById(`items-${numeroCompra}`);
+  async function toggleOrderDetails(numeroCompra) {
+    const itemsContainer = document. getElementById(`items-${numeroCompra}`);
 
-    if (!itemsContainer) {
-      console.error("No se encontro el contenedor:", `items-${numeroCompra}`);
-      return;
+    if (! itemsContainer) {
+        console.error("No se encontró el contenedor:", `items-${numeroCompra}`);
+        return;
     }
 
-    // Si ya esta visible, ocultarlo
-    if (itemsContainer.style.display === "block") {
-      itemsContainer.style.display = "none";
-      return;
+    // Si ya está visible, ocultarlo
+    if (itemsContainer. style.display === "block") {
+        itemsContainer.style.display = "none";
+        return;
     }
 
-    itemsContainer.innerHTML =
-      '<p style="text-align:center; color:#a8b5c7;">Cargando detalles...</p>';
-    itemsContainer.style.display = "block";
+    itemsContainer.innerHTML = '<p style="text-align:center; color:#a8b5c7;">Cargando detalles...</p>';
+    itemsContainer.style. display = "block";
 
     try {
-      const productoId = order.productoId || order.productId;
+        //  USAR HISTORIALCONTROLLER PARA OBTENER DETALLES:
+        const detailsUrl = getApiUrl(
+            API_CONFIG.ENDPOINTS. HISTORIAL.GET_ORDER(numeroCompra)
+        );
+        console.log("Obteniendo detalles de la orden:", detailsUrl);
 
-      if (!productoId) {
-        throw new Error("No se encontro el ID del producto");
-      }
+        const detailsResponse = await fetch(detailsUrl);
 
-      const productUrl = getApiUrl(
-        API_CONFIG.ENDPOINTS.PRODUCTOS.GET_BY_ID(productoId)
-      );
-      console.log("Obteniendo producto:", productUrl);
+        if (!detailsResponse.ok) {
+            throw new Error("Error al obtener detalles de la orden");
+        }
 
-      const productResponse = await fetch(productUrl);
+        const orderItems = await detailsResponse.json();
+        console.log("Items de la orden obtenidos:", orderItems);
 
-      if (!productResponse.ok) {
-        throw new Error("Error al obtener producto");
-      }
+        if (! orderItems || orderItems.length === 0) {
+            itemsContainer.innerHTML = '<p style="text-align:center; color:#a8b5c7;">No se encontraron items para esta orden. </p>';
+            return;
+        }
 
-      const producto = await productResponse.json();
-      console.log("Producto obtenido:", producto);
+        // RENDERIZAR ITEMS USANDO LOS NOMBRES CONSISTENTES:
+        const itemsHTML = orderItems.map(item => {
+            // Usar los nombres actualizados de OrderItemDto
+            const productoId = item.productoId;
+            const nombreProducto = item.nombreProducto;
+            const cantidad = item.cantidad;
+            const precioUnitario = item. precioUnitario;
+            const precioTotal = item. precioTotal;
 
-      const cantidad = order.cantidad || 1;
-      const precioTotal = order.precioTotal || 0;
-      const precioUnitario = precioTotal / cantidad;
+            // Mapeo de imágenes (mantener por ahora, luego se puede mejorar)
+            const imageMap = {
+                1: "img/productos/charizard.png",
+                2: "img/productos/gundam-astray.jpg",
+                3: "img/productos/black-lotus.jpg",
+                4: "img/productos/blue-eyes. jpg",
+                5: "img/productos/mewtwo.jpg",
+                6: "img/productos/iron-man-hot-toys.jpg",
+                7: "img/productos/funko-batman.jpg",
+                8: "img/productos/one-piece-luffy.jpg",
+                9: "img/productos/spiderman-statue.jpg",
+                10: "img/productos/marvel-legends.jpg",
+                11: "img/productos/gamecube. jpg",
+                12: "img/productos/nintendo64.jpg"
+            };
 
-      // Mapeo de IDs a imágenes
-      const imageMap = {
-        1: "img/productos/charizard.png",
-        2: "img/productos/gundam-astray.jpg",
-        3: "img/productos/black-lotus.jpg",
-        4: "img/productos/blue-eyes.jpg",
-        5: "img/productos/mewtwo.jpg",
-        6: "img/productos/iron-man-hot-toys.jpg",
-        7: "img/productos/funko-batman.jpg",
-        8: "img/productos/luffy-gear5.jpg",
-        9: "img/productos/mjolnir-replica.jpg",
-        10: "img/productos/master-chief-helmet.jpg",
-      };
+            const imagenUrl = imageMap[productoId] || "img/productos/default.png";
 
-      const nombreProducto =
-        producto.nombreProducto || producto.name || "default";
-      const imagenUrl = imageMap[productoId] || "img/productos/default.png";
-
-      console.log(
-        "Buscando imagen para producto ID",
-        productoId,
-        ":",
-        imagenUrl
-      );
-
-      itemsContainer.innerHTML = `
-                <div class="order-items">
-                    <div class="order-item">
-                        <img src="${imagenUrl}" 
-                             alt="${nombreProducto}" 
-                             class="order-item-img"
-                             onerror="this.src='img/productos/default.png'; console.error('No se encontro imagen:', '${imagenUrl}')">
-                        <div class="order-item-details">
-                            <h4>${nombreProducto}</h4>
-                            <p class="order-item-quantity">Cantidad: ${cantidad}</p>
-                            <p class="order-item-price">Precio unitario: $${precioUnitario.toFixed(
-                              2
-                            )}</p>
-                        </div>
-                        <div class="order-item-total">
-                            $${Number(precioTotal).toFixed(2)}
-                        </div>
+            return `
+                <div class="order-item">
+                    <img src="${imagenUrl}" 
+                         alt="${nombreProducto}" 
+                         class="order-item-img"
+                         onerror="this. src='img/productos/default. png'">
+                    <div class="order-item-details">
+                        <h4>${nombreProducto}</h4>
+                        <p class="order-item-quantity">Cantidad: ${cantidad}</p>
+                        <p class="order-item-price">Precio unitario: $${Number(precioUnitario).toFixed(2)}</p>
+                    </div>
+                    <div class="order-item-total">
+                        $${Number(precioTotal).toFixed(2)}
                     </div>
                 </div>
             `;
+        }). join("");
+
+        itemsContainer.innerHTML = `<div class="order-items">${itemsHTML}</div>`;
+
     } catch (error) {
-      console.error("Error al cargar detalles:", error);
-      itemsContainer.innerHTML = `<p style="text-align:center; color:#ff6b35;">Error: ${error.message}</p>`;
+        console. error("Error al cargar detalles:", error);
+        itemsContainer.innerHTML = `<p style="text-align:center; color:#ff6b35;">Error: ${error.message}</p>`;
     }
   }
 
