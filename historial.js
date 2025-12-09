@@ -191,14 +191,16 @@
         5: "img/productos/mewtwo.jpg",
         6: "img/productos/iron-man-hot-toys.jpg",
         7: "img/productos/funko-batman.jpg",
-        8: "img/productos/luffy-gear5.jpg",
-        9: "img/productos/mjolnir-replica.jpg",
-        10: "img/productos/master-chief-helmet.jpg",
+        8: "img/productos/one-piece-luffy.jpg",
+        9: "img/productos/spiderman-statue.jpg",
+        10: "img/productos/marvel-legends.jpg",
+        11: "img/productos/gamecube.jpg",
+        12: "img/productos/nintendo64.jpg",
       };
 
       const nombreProducto =
-        producto.nombreProducto || producto.name || "default";
-      const imagenUrl = imageMap[productoId] || "img/productos/default.png";
+        producto.nombreProducto || producto.name || "Producto";
+      const imagenUrl = imageMap[productoId] || imageMap[1]; // Fallback a charizard si no existe
 
       console.log(
         "Buscando imagen para producto ID",
@@ -212,8 +214,7 @@
                     <div class="order-item">
                         <img src="${imagenUrl}" 
                              alt="${nombreProducto}" 
-                             class="order-item-img"
-                             onerror="this.src='img/productos/default.png'; console.error('No se encontro imagen:', '${imagenUrl}')">
+                             class="order-item-img">
                         <div class="order-item-details">
                             <h4>${nombreProducto}</h4>
                             <p class="order-item-quantity">Cantidad: ${cantidad}</p>
