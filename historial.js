@@ -131,7 +131,7 @@
     `;
 
     // Agregar event listener directamente al boton creado
-    // Cambio hecho por Luis: Evita errores de querySelectorAll con selectores invalidos
+    // Evita errores de querySelectorAll con selectores invalidos
     const button = card.querySelector(`#btn-order-${index}`);
     button.addEventListener("click", () => toggleOrderDetails(order));
 

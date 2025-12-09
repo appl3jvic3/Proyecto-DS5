@@ -115,7 +115,7 @@
     ? document.addEventListener("DOMContentLoaded", init)
     : init();
 
-  /* ===== NUEVO: Búsqueda global en Home usando TODOS los productos de productos.js ===== */
+  
 
   // Usa la lista global expuesta por productos.js si existe; si no, usa los 4 del Home.
   const ALL = Array.isArray(window.ALL_PRODUCTS)

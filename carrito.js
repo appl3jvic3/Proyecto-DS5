@@ -1,8 +1,4 @@
 // carrito.js - Funcionalidad del carrito de compras
-// Cambios hechos por Luis:
-// - Modificado el proceso de checkout para usar el endpoint /Carrito/checkout en lugar de /Carrito/add
-// - Agregado manejo de validacion de stock insuficiente
-// - Agregado display de stock restante despues de compra exitosa
 
 document.addEventListener("DOMContentLoaded", function () {
   // Elementos del DOM
@@ -130,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Event listener para el boton de pago
-  // MODIFICADO POR LUIS: Cambiado para usar endpoint /Carrito/checkout con validacion de stock
+  // Cambiado para usar endpoint /Carrito/checkout con validacion de stock
   checkoutButton.addEventListener("click", async function () {
     if (cart.length === 0) {
       alert(
@@ -169,11 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
       checkoutButton.disabled = true;
       checkoutButton.textContent = "Procesando... ";
 
-      // CAMBIO HECHO POR LUIS:
-      // Modificado para enviar cada producto usando el endpoint /Carrito/checkout
       // Este endpoint valida el stock disponible y lo reduce automaticamente
-      // Antes usaba: API_CONFIG.ENDPOINTS.CARRITO.ADD
-      // Ahora usa: API_CONFIG. ENDPOINTS.CARRITO.CHECKOUT
       for (const item of cart) {
         console.log("Procesando item:", item);
 
@@ -200,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         console.log("Enviando a API checkout:", carritoData);
 
-        // CAMBIO PRINCIPAL: Usar endpoint de checkout en lugar de add
+        // Usar endpoint de checkout en lugar de add
         const response = await fetch(
           getApiUrl(API_CONFIG.ENDPOINTS.CARRITO.CHECKOUT),
           {
@@ -212,8 +204,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         );
 
-        // MANEJO DE ERRORES MEJORADO POR LUIS:
-        // Ahora detecta especificamente el error de stock insuficiente (400)
+        // Detecta especificamente el error de stock insuficiente (400)
         if (!response.ok) {
           let errorData;
           try {
@@ -241,7 +232,7 @@ document.addEventListener("DOMContentLoaded", function () {
           );
         }
 
-        // AGREGADO POR LUIS: Mostrar informacion del stock restante
+        // Mostrar informacion del stock restante
         const result = await response.json();
         console.log("Compra exitosa:", result);
         console.log(
@@ -278,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
       cart = [];
       localStorage.setItem("cart", JSON.stringify(cart));
 
-      // MENSAJE MEJORADO POR LUIS: Incluye informacion sobre actualizacion de inventario
+      // Incluye informacion sobre actualizacion de inventario
       alert(
         "Compra realizada con exito!\n\n" +
           "La compra se ha guardado en la base de datos.\n" +
@@ -288,7 +279,6 @@ document.addEventListener("DOMContentLoaded", function () {
     } catch (error) {
       console.error("Error al procesar la compra:", error);
 
-      // MANEJO DE ERRORES MEJORADO POR LUIS:
       // Muestra el mensaje de error completo y recarga la pagina si es necesario
       alert(
         `Hubo un error al procesar tu compra:\n\n${error.message}\n\n` +
@@ -327,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
         currentUser.email ||
         "Usuario";
 
-      // Si hay foto de perfil, mostrarla
+      // Si hay foto de perfil, se muestra
       if (userPhoto) {
         userProfileImg.src = userPhoto;
         userProfileImg.style.width = "28px";

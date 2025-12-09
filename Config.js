@@ -1,6 +1,4 @@
 // config.js - Configuracion centralizada de endpoints del API
-// Cambios hechos por Luis:
-// - Agregado endpoint GET_USER en seccion AUTH para obtener datos de usuario por ID
 
 const API_CONFIG = {
     BASE_URL: 'https://localhost:7293/api',
@@ -9,8 +7,7 @@ const API_CONFIG = {
         AUTH: {
             LOGIN: '/Auth/login',
             REGISTER: '/Auth/register',
-            
-            // AGREGADO POR LUIS:
+
             // Endpoint para obtener informacion de un usuario especifico
             // Usado en perfil.js cuando faltan datos del usuario en localStorage
             // Uso: API_CONFIG.ENDPOINTS.AUTH. GET_USER(1) retorna "/Auth/user/1"
@@ -32,7 +29,7 @@ const API_CONFIG = {
             ADD: '/Carrito',
             CHECKOUT: '/Carrito/checkout',
             
-            // Agregado por Luis: Obtener historial de compras por usuario
+            // Obtener historial de compras por usuario
             // Usado en historial.js para mostrar las ordenes del usuario
             GET_BY_USER: (userId) => `/Carrito/user/${userId}`
         },

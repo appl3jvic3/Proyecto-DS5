@@ -1,6 +1,4 @@
 // perfil.js - Gestion de la pagina de perfil del usuario
-// Cambios hechos por Luis:
-// - Actualizado para usar config.js en lugar de URL hardcodeada (linea 31)
 
 (function () {
   "use strict";
@@ -32,10 +30,6 @@
     if (!user.nombreUsuario || !user.correo) {
       console.log("Faltan datos del usuario, obteniendo de la API...");
       try {
-        // CAMBIO HECHO POR LUIS:
-        // Usar endpoint desde config.js en lugar de URL hardcodeada
-        // Antes: `https://localhost:7293/api/Auth/user/${user.usuarioId}`
-        // Ahora: getApiUrl(API_CONFIG.ENDPOINTS.AUTH. GET_USER(user.usuarioId))
         const url = getApiUrl(
           API_CONFIG.ENDPOINTS.AUTH.GET_USER(user.usuarioId)
         );

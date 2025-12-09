@@ -1,4 +1,3 @@
-// productos.js - Complete
 
 document.addEventListener("DOMContentLoaded", function () {
   const PRODUCTS = [
@@ -76,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  // La variable se llama "corrige" como pediste; también exponemos ALL_PRODUCTS por compatibilidad.
+  // Se exponen ALL_PRODUCTS por compatibilidad.
   try {
     window.corrige =
       Array.isArray(window.corrige) && window.corrige.length
@@ -165,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cartCountElement) cartCountElement.textContent = totalItems;
   }
 
-  // Cambios hechos por Luis: Cargar productos desde API con información de stock
+  // Cargar productos desde API con información de stock
   async function renderProducts() {
     // Validar que productsGrid exista para evitar errores en páginas como Home.html
     if (!productsGrid) return;
@@ -182,13 +181,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const productosAPI = await response.json();
 
-      // Cambios hechos por Luis: Debug para ver estructura del API
+      // Debug para ver estructura del API
       console.log("Productos del API:", productosAPI);
       if (productosAPI.length > 0) {
         console.log("Primer producto:", productosAPI[0]);
       }
 
-      // Cambios hechos por Luis: Generar HTML con información de stock
+      // Generar HTML con información de stock
       // Solo mostrar productos que existan en el array local PRODUCTS
       productsGrid.innerHTML = productosAPI
         .filter((producto) => {
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
             producto.CantidadDisponible ||
             0;
 
-          // Cambios hechos por Luis: Usar datos del array local PRODUCTS
+          // Usar datos del array local PRODUCTS
           const productoLocal = PRODUCTS.find((p) => p.id === id);
           const nombre = productoLocal.name;
           const precio = productoLocal.price;
@@ -213,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const isOutOfStock = stock === 0;
           const isLowStock = stock > 0 && stock <= 5;
 
-          // Cambios hechos por Luis: Determinar badge de stock
+          // Determinar badge de stock
           let stockBadge = "";
           if (isOutOfStock) {
             stockBadge =
@@ -270,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const precio =
                   producto.precio || producto.price || producto.Precio;
 
-                // Cambios hechos por Luis: Usar imagen del array local PRODUCTS
+                // Usar imagen del array local PRODUCTS
                 const productoLocal = PRODUCTS.find((p) => p.id === id);
                 const imagen =
                   productoLocal?.image || "img/productos/default.png";
@@ -314,7 +313,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Cambios hechos por Luis: Renderizar lista filtrada con información de stock
+  // Renderizar lista filtrada con información de stock
   async function renderFilteredProducts(list) {
     if (!list || list.length === 0) {
       productsGrid.innerHTML = `
@@ -334,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       productsGrid.innerHTML = list
         .map((product) => {
-          // Cambios hechos por Luis: Buscar info de stock del API con mapeo flexible
+          // Buscar info de stock del API con mapeo flexible
           const productoAPI = productosAPI.find((p) => {
             const apiId = p.productoId || p.id || p.ProductoId;
             return apiId === product.id;
@@ -427,7 +426,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderFilteredProducts(filtrados);
   }
 
-  // NUEVO: Conectar el input y el botón de búsqueda si existen en la página
+  // Conectar el input y el botón de búsqueda si existen en la página
   const searchInput = document.getElementById("search-input");
   const btnSearch = document.getElementById("btn-search");
 
