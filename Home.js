@@ -115,8 +115,6 @@
     ? document.addEventListener("DOMContentLoaded", init)
     : init();
 
-  
-
   // Usa la lista global expuesta por productos.js si existe; si no, usa los 4 del Home.
   const ALL = Array.isArray(window.ALL_PRODUCTS)
     ? window.ALL_PRODUCTS
@@ -166,15 +164,14 @@
   }
 
   // Conecta la búsqueda del Home
-  if (btnSearch && searchInput && homeGrid) {
-    btnSearch.addEventListener("click", () => buscarEnHome(searchInput.value));
-  }
-  if (searchInput && homeGrid) {
-    searchInput.addEventListener("input", (e) => buscarEnHome(e.target.value));
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        buscarEnHome(searchInput.value);
+  if (btnSearch && searchInput) {
+    btnSearch.addEventListener("click", () => {
+      const q = (searchInput.value || "").trim();
+      // Si hay término, ir a productos con query; si está vacío, ir a productos (lista completa)
+      if (q) {
+        window.location.href = `productos.html?search=${encodeURIComponent(q)}`;
+      } else {
+        window.location.href = "productos.html";
       }
     });
   }

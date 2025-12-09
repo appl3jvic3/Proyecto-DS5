@@ -427,27 +427,57 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Conectar el input y el botón de búsqueda si existen en la página
-  const searchInput = document.getElementById("search-input");
-  const btnSearch = document.getElementById("btn-search");
+const searchInput = document.getElementById("search-input");
+const btnSearch = document.getElementById("btn-search");
 
-  if (btnSearch && searchInput) {
-    btnSearch.addEventListener("click", () => {
-      buscarProductos(searchInput.value);
-    });
+if (btnSearch && searchInput) {
+  // Click en lupa: siempre buscar (si está vacío, buscarProductos('') restaurará la lista)
+  if (btnSearch.__searchHandler) {
+    btnSearch.removeEventListener("click", btnSearch.__searchHandler);
   }
-  if (searchInput) {
-    // Buscar mientras escribe (opcional)
-    searchInput.addEventListener("input", (e) => {
-      buscarProductos(e.target.value);
-    });
-    // Buscar con Enter
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        buscarProductos(searchInput.value);
+  const clickHandler = () => {
+    buscarProductos(searchInput.value);
+  };
+  btnSearch.__searchHandler = clickHandler;
+  btnSearch.addEventListener("click", clickHandler);
+}
+
+if (searchInput) {
+  // Cuando el usuario BORRA el contenido y el valor queda vacío, restaurar la lista automáticamente
+  if (searchInput.__inputHandler) {
+    searchInput.removeEventListener("input", searchInput.__inputHandler);
+  }
+  const inputHandler = (e) => {
+    const val = (e.target.value || "").trim();
+    if (val.length === 0) {
+      if (typeof renderProducts === "function") {
+        renderProducts();
+      } else {
+        // fallback si no existe renderProducts
+        buscarProductos("");
       }
-    });
+    }
+  };
+  searchInput.__inputHandler = inputHandler;
+  searchInput.addEventListener("input", inputHandler);
+
+  // Enter: solo buscar si hay texto (si está vacío, no hacer nada — la restauración ya ocurre en 'input')
+  if (searchInput.__keydownHandler) {
+    searchInput.removeEventListener("keydown", searchInput.__keydownHandler);
   }
+  const keydownHandler = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const val = (searchInput.value || "").trim();
+      if (val.length > 0) {
+        buscarProductos(val);
+      }
+      // si está vacío, no hacer nada (la lista ya se restauró por 'input')
+    }
+  };
+  searchInput.__keydownHandler = keydownHandler;
+  searchInput.addEventListener("keydown", keydownHandler);
+}
 
   // Configurar botones del header
   function setupHeaderButtons() {
@@ -492,6 +522,29 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+
+(function applyInitialSearchAfterInit() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const q = (params.get("search") || "").trim();
+    if (!q) return;
+
+    const apply = () => {
+      const input = document.getElementById("search-input");
+      if (input) input.value = q;
+      buscarProductos(q);
+    };
+
+    // Ejecutar después de que init/render hayan corrido
+    if (document.readyState === "complete") {
+      apply();
+    } else {
+      window.addEventListener("load", apply);
+    }
+  } catch (e) {
+    console.error("No se pudo aplicar búsqueda inicial:", e);
+  }
+})();
 
   // Inicializar
   function init() {
